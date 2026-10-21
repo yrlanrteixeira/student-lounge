@@ -258,7 +258,7 @@ export function QuestionRunner({ ids, context, title, subtitle }: { ids: string[
             </section>
           ) : (
             <>
-              <section className={cx("flex flex-col gap-2 rounded-card border p-5", missed ? "border-danger-line bg-danger-bg text-[#7A271A]" : "border-success-line bg-success-bg text-[#074D31]")}>
+              <section className={cx("flex flex-col gap-2 rounded-card border p-5", missed ? "border-danger-line bg-danger-bg text-danger-ink" : "border-success-line bg-success-bg text-success-ink")}>
                 <span className="text-xl font-bold">{missed ? "Não foi dessa vez" : confidence === "unsure" ? "Acertou — mas na dúvida" : "Você acertou"}</span>
                 <span className="text-sm leading-relaxed">
                   Gabarito: <strong>{q.answer === "N" ? "anulada" : q.answer}</strong>. {q.explanation}

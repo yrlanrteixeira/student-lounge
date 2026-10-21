@@ -259,7 +259,7 @@ export default function Today() {
                 <span className="text-xs text-ink-3">{d.sub}</span>
                 <span className="flex justify-between text-xs">
                   <span className="text-ink-strong">{shortDate(d.date)}</span>
-                  <span className={cx("font-semibold", left <= 10 ? "text-[#D92D20]" : "text-success")}>{left === 0 ? "hoje" : `em ${left} dias`}</span>
+                  <span className={cx("font-semibold", left <= 10 ? "text-danger" : "text-success")}>{left === 0 ? "hoje" : `em ${left} dias`}</span>
                 </span>
               </div>
             );

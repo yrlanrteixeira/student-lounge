@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import "@fontsource-variable/plus-jakarta-sans";
+import "@fontsource-variable/inter";
 import "./globals.css";
 import { ContentProvider } from "@/lib/data/ContentProvider";
 import { UserDataProvider } from "@/lib/data/UserDataProvider";
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#C11574",
+  themeColor: "#f5f5f7",
   width: "device-width",
   initialScale: 1,
 };

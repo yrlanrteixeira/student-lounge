@@ -11,7 +11,7 @@ import { Card, EmptyState, Heading, Loading, Pill, ProgressBar, cx, pct } from "
 function cellColor(r: number | null) {
   if (r === null) return "bg-subtle text-ink-2";
   if (r < 0.45) return "bg-trap text-white";
-  if (r < 0.65) return "bg-[#FDBA74] text-ink";
+  if (r < 0.65) return "bg-trap-soft text-ink";
   if (r < 0.8) return "bg-brand-300 text-ink";
   return "bg-brand-700 text-white";
 }
@@ -155,7 +155,7 @@ export default function Diagnosis() {
             <Heading id="map">Mapa por tópico</Heading>
             <span aria-hidden className="flex flex-wrap items-center gap-1.5 text-xs text-ink-2">
               <span className="h-3.5 w-3.5 rounded-[4px] bg-trap" />&lt;45%
-              <span className="ml-1.5 h-3.5 w-3.5 rounded-[4px] bg-[#FDBA74]" />45–64%
+              <span className="ml-1.5 h-3.5 w-3.5 rounded-[4px] bg-trap-soft" />45–64%
               <span className="ml-1.5 h-3.5 w-3.5 rounded-[4px] bg-brand-300" />65–79%
               <span className="ml-1.5 h-3.5 w-3.5 rounded-[4px] bg-brand-700" />80%+
             </span>
@@ -189,7 +189,7 @@ export default function Diagnosis() {
                 traps.map((t) => (
                   <div key={t.id} className="flex flex-col gap-1">
                     <div className="flex justify-between text-[13px]"><span>{t.name}</span><strong className="tabular">{pct(t.errorRate)}</strong></div>
-                    <ProgressBar value={t.errorRate ?? 0} color={(t.errorRate ?? 0) >= 0.35 ? "bg-trap" : "bg-[#FDBA74]"} />
+                    <ProgressBar value={t.errorRate ?? 0} color={(t.errorRate ?? 0) >= 0.35 ? "bg-trap" : "bg-trap-soft"} />
                   </div>
                 ))
               )}

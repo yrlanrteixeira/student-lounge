@@ -139,6 +139,7 @@ src/
     admin.ts           validação, importação e exportação do conteúdo
     data/              ContentProvider, UserDataProvider e acesso ao progresso
 supabase/schema.sql    tabelas, validações e segurança
+design/                logo original (EPS e JPG) e o SVG vetorizado usado no app e nos ícones
 ```
 
 Código, pastas, URLs e banco estão em inglês; os textos da tela e os ids de conteúdo (`portugues`, `pt.interpretacao`) ficam em português.
