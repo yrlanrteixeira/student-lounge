@@ -9,98 +9,139 @@ Plataforma de estudos para o concurso de **Escrevente Técnico Judiciário do TJ
 - **Diagnóstico**: nota projetada, blocos × corte, prioridades, mapa por tópico, pegadinhas em que mais cai e causas dos erros.
 - **Simulados** no formato 2027 (70 questões) e provas originais.
 - **NotebookLM**: cada matéria gera um `.md` para subir como fonte (áudio, quiz e flashcards).
+- **Administração** (`/admin`): importar, editar e tratar o conteúdo pelo próprio app, com fila de problemas reportados por quem estuda.
 
-Stack: Next.js 15 + Tailwind 4 + Supabase (Auth + Postgres) + Vercel. Tudo no plano gratuito.
+Stack: Next.js 15 + Tailwind 4 + Supabase (Auth, Postgres e Storage) + Vercel. Tudo no plano gratuito.
+
+Tudo fica no Supabase: o conteúdo (questões, edital, guia, imagens) e o progresso de cada pessoa. Não existe modo local nem arquivo de conteúdo no repositório.
 
 ---
 
 ## Rodar no computador
+
+1. Copie `.env.example` para `.env.local` e preencha `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`. Sem elas o app não abre.
+2. Rode:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abra http://localhost:3000. Sem o Supabase configurado, o app roda no **modo local** (o progresso fica só naquele navegador).
+Abra http://localhost:3000.
 
-## Colocar no ar (≈ 15 minutos)
+## Colocar no ar
 
-### 1. Supabase (banco e login)
+### 1. Supabase (banco, login e imagens)
 1. Crie um projeto grátis em https://supabase.com.
-2. **SQL Editor** → cole o conteúdo de `supabase/schema.sql` → **Run**.
-3. **Authentication → Users → Add user**: crie o usuário dela (e o seu) com e-mail e senha. Marque "Auto Confirm User".
-4. **Authentication → Sign In / Providers → Email**: desligue *Allow new users to sign up* (só vocês entram).
-5. **Project Settings → API**: copie a *Project URL* e a chave *anon public*.
+2. **SQL Editor**: cole o conteúdo de `supabase/schema.sql` e clique em **Run**. O script pode rodar de novo sem problema.
+3. **Authentication → Users → Add user**: crie os usuários com e-mail e senha, marcando "Auto Confirm User".
+4. **Authentication → Sign In / Providers → Email**: desligue *Allow new users to sign up*.
+5. **Dar acesso de admin** a quem vai alimentar o conteúdo, no SQL Editor:
+   ```sql
+   insert into public.admins (user_id)
+   select id from auth.users where email = 'seu-email@exemplo.com';
+   ```
+6. **Project Settings → API**: copie a *Project URL* e a chave *anon public*.
+7. Carregue o conteúdo em `/admin/importar` (veja abaixo).
 
 ### 2. Vercel (site)
 1. Suba esta pasta para um repositório no GitHub.
-2. Em https://vercel.com → **Add New → Project** → importe o repositório.
-3. Em **Environment Variables**, adicione:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+2. Em https://vercel.com, use **Add New → Project** e importe o repositório.
+3. Em **Environment Variables**, adicione `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 4. **Deploy**. Cada `git push` publica de novo sozinho.
 
 ### 3. No celular
-Abra o site no Safari (iPhone) ou Chrome (Android) → **Adicionar à Tela de Início**. Ele abre como app.
+Abra o site no Safari (iPhone) ou Chrome (Android) e use **Adicionar à Tela de Início**. Ele abre como app.
 
 ---
 
-## Manutenção
+## Segurança
 
-| Quero… | Onde mexer |
+- Visitante sem login não acessa nenhuma tabela.
+- Conteúdo (`exam`, `subjects`, `topics`, `traps`, `laws`, `questions`): quem está logado lê; só quem está em `admins` grava.
+- Progresso (`profiles`, `answers`, `reviews`, `topic_progress`, `mock_exams`): cada pessoa só vê e altera as próprias linhas.
+- Reportes (`reports`): cada pessoa abre e vê os seus; o admin vê todos e resolve.
+- Imagens: bucket público `questions` (são páginas das provas oficiais); só admin envia, troca ou apaga.
+- O próprio banco valida o conteúdo: tópico precisa ser da matéria da questão, toda pegadinha citada precisa existir, gabarito só aceita A a E ou N.
+
+## Administração do conteúdo
+
+| Quero… | Onde |
 |---|---|
-| Adicionar ou corrigir questões | `src/data/banco.json` |
-| Ajustar o edital mastigado | `src/data/guia.json` |
-| Mudar tópicos, pesos e tipos de pegadinha | `src/data/taxonomia.json` |
-| Mudar o cronograma semanal ou as fases | `src/lib/plano.ts` |
-| Links de lei seca | `src/lib/leis.ts` |
-| Cores e fontes | `src/app/globals.css` |
+| Subir muitas questões de uma vez | `/admin/importar` |
+| Criar ou corrigir uma questão, trocar a imagem | `/admin/questoes` |
+| Ver problemas apontados por quem estuda | `/admin/reportes` |
+| Editar o guia de um tópico ou criar tópico | `/admin/topicos` |
+| Backup completo | `/admin`, botão "Exportar conteúdo (JSON)" |
+| Matérias, tipos de pegadinha, lei seca, dados do edital | Exportar, editar o JSON e importar de volta |
 
-### Formato de uma questão (`banco.json`)
+Para tirar uma questão de circulação, prefira mudar a situação para `annulled`, `outdated` ou `off_syllabus` em vez de apagar. Apagar não some com o histórico de quem já respondeu.
+
+### Formato de importação
+
+O arquivo é o mesmo que "Exportar conteúdo" gera. Pode ser uma lista simples (tratada como questões) ou um objeto com qualquer combinação destas seções, com os campos iguais às colunas do banco:
 
 ```json
 {
-  "id": "2026-001",
-  "ano": "2026",
-  "numero": 1,
-  "fonte": "Simulado próprio",
-  "materia": "penal",
-  "topico": "pen.peculato",
-  "subtopico": "Peculato culposo",
-  "artigos": "CP, art. 312, § 3º",
-  "texto_base": null,
-  "enunciado": "…",
-  "alternativas": { "A": "…", "B": "…", "C": "…", "D": "…", "E": "…" },
-  "gabarito": "C",
-  "dificuldade": 2,
-  "pegadinhas": ["regra_excecao"],
-  "pegadinha": "Uma frase sobre a armadilha.",
-  "explicacao": "Por que a correta está correta.",
-  "distratores": { "A": "…", "B": "…", "D": "…", "E": "…" },
-  "dica": "",
-  "status": "ok",
-  "status_nota": "",
-  "precisa_imagem": false
+  "subjects": [{ "id": "penal", "name": "Direito Penal", "block": "II", "exam_questions": 4, "color": "#…", "overview": "…", "position": 1 }],
+  "traps": [{ "id": "regra_excecao", "name": "Regra × exceção", "description": "…", "position": 4 }],
+  "topics": [{ "id": "pen.peculato", "subject": "penal", "name": "Peculato", "short_name": "Peculato", "syllabus_ref": "art. 312", "occurrences": 9, "years": ["2023", "2025"], "priority": "high", "how_tested": "…", "memorize": ["…"], "common_traps": ["…"], "comparison": "…", "position": 12 }],
+  "laws": [{ "subject": "penal", "name": "Código Penal", "url": "https://…", "excerpt": "arts. 312–317", "position": 0 }],
+  "exam": { "name": "…", "board": "Vunesp", "registration": "2026-10-28 a 2026-12-10", "exam_date": "2027-03-14", "blocks": [], "essay": {} },
+  "questions": [
+    {
+      "id": "2026-001",
+      "year": "2026",
+      "number": 1,
+      "source": "Simulado próprio",
+      "subject": "penal",
+      "topic": "pen.peculato",
+      "subtopic": "Peculato culposo",
+      "legal_refs": "CP, art. 312, § 3º",
+      "passage": null,
+      "statement": "…",
+      "options": { "A": "…", "B": "…", "C": "…", "D": "…", "E": "…" },
+      "answer": "C",
+      "difficulty": 2,
+      "traps": ["regra_excecao"],
+      "trap_note": "Uma frase sobre a armadilha.",
+      "explanation": "Por que a correta está correta.",
+      "distractors": { "A": "…", "B": "…", "D": "…", "E": "…" },
+      "tip": "",
+      "status": "ok",
+      "status_note": "",
+      "needs_image": false,
+      "image": null
+    }
+  ]
 }
 ```
 
-- `materia`, `topico` e `pegadinhas` precisam existir em `taxonomia.json`.
-- `id` não pode repetir (o build avisa).
-- Questão com figura: salve a imagem em `public/questoes/<id>.png` e adicione `"imagem": "/questoes/<id>.png"`.
-- `status`: `ok`, `desatualizada`, `anulada` ou `fora_edital` (anuladas e atualidades vencidas não entram nos blocos).
-
-Depois de editar: `npm run build` para conferir e `git push` para publicar.
+Regras:
+- `id` novo cria; `id` existente atualiza. Campos omitidos mantêm o valor atual.
+- Questão nova precisa de `year`, `subject`, `topic`, `statement`, `options` e `answer`.
+- `answer`: `A` a `E`, ou `N` para anulada. `difficulty`: 1 a 3. `priority`: `high`, `medium` ou `low`.
+- `status`: `ok`, `outdated`, `annulled`, `off_syllabus` ou `disputed_key`. Anuladas e atualidades vencidas não entram nos treinos.
+- Em `laws`, a lista de cada matéria citada substitui a lista atual daquela matéria.
+- A validação mostra os erros item a item antes de gravar; o botão de importar só libera sem erros.
+- Imagem: envie pelo editor da questão. Ela vai para o bucket `questions` como `<id>.png` e o campo `image` guarda esse caminho.
 
 ## Estrutura
 
 ```
 src/
-  app/            páginas (Hoje, Questões, Revisão, Simulados, Diagnóstico, Edital, Configurações)
-  components/     AppShell (menu responsivo), Runner (resolver questões), Simulado, ui
-  lib/            plano (missão do dia), estatísticas, dados (Supabase ou local), conteúdo
-  data/           banco de questões, guia, taxonomia (o indice.json é gerado no build)
-supabase/schema.sql   tabelas + segurança (cada pessoa só vê os próprios dados)
+  app/                 páginas (Hoje, Questões, Revisão, Simulados, Diagnóstico, Edital, Configurações, Admin)
+  components/          AppShell, QuestionRunner (resolver questões), MockExam (simulado), ui, icons
+  lib/
+    content.ts         conteúdo carregado do Supabase (questões, tópicos, matérias…)
+    plan.ts            missão do dia, fases e cronograma semanal
+    stats.ts           estatísticas e prioridades
+    admin.ts           validação, importação e exportação do conteúdo
+    data/              ContentProvider, UserDataProvider e acesso ao progresso
+supabase/schema.sql    tabelas, validações e segurança
 ```
+
+O código está em inglês; os textos da tela, as URLs e os ids de conteúdo (`portugues`, `pt.interpretacao`) ficam em português.
 
 ## Pontos para conferir
 
