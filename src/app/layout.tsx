@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import "@fontsource-variable/plus-jakarta-sans";
 import "./globals.css";
-import { DadosProvider } from "@/lib/dados/DadosProvider";
+import { ContentProvider } from "@/lib/data/ContentProvider";
+import { UserDataProvider } from "@/lib/data/UserDataProvider";
 import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
@@ -20,9 +21,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body className="antialiased">
-        <DadosProvider>
-          <AppShell>{children}</AppShell>
-        </DadosProvider>
+        <ContentProvider>
+          <UserDataProvider>
+            <AppShell>{children}</AppShell>
+          </UserDataProvider>
+        </ContentProvider>
       </body>
     </html>
   );
