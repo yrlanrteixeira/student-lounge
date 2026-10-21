@@ -13,7 +13,7 @@ const MASTERY = {
   in_progress: { label: "Em progresso", tone: "honey" as const },
   not_started: { label: "Não iniciado", tone: "neutral" as const },
 };
-const PRIORITY = { high: { label: "Alta", tone: "brand-strong" as const }, medium: { label: "Média", tone: "brand" as const }, low: { label: "Baixa", tone: "neutral" as const } };
+const PRIORITY = { high: { label: "Alta", tone: "brand" as const }, medium: { label: "Média", tone: "neutral" as const }, low: { label: "Baixa", tone: "neutral" as const } };
 
 export function TopicList({ topics, showSubject }: { topics: Topic[]; showSubject?: boolean }) {
   const { answers, topicProgress } = useUserData();

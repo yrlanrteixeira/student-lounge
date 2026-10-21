@@ -63,8 +63,8 @@ function Importer() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Importar conteúdo</h1>
-        <p className="text-sm text-ink-2">Envie um arquivo JSON com questões, tópicos ou outras partes do conteúdo. Nada é gravado antes da validação passar sem erros.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Importar conteúdo</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">Envie um arquivo JSON com questões, tópicos ou outras partes do conteúdo. Nada é gravado antes da validação passar sem erros.</p>
       </header>
 
       <Card className="flex flex-col gap-4 p-5">

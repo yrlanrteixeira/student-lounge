@@ -26,8 +26,8 @@ export default function Settings() {
   return (
     <form onSubmit={save} className="mx-auto flex max-w-2xl flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Configurações</h1>
-        <p className="text-sm text-ink-2">Conta: {email}. O progresso fica salvo na nuvem e sincroniza entre os aparelhos.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Configurações</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">Conta: {email}. O progresso fica salvo na nuvem e sincroniza entre os aparelhos.</p>
       </header>
 
       <Card className="flex flex-col gap-4 p-5">

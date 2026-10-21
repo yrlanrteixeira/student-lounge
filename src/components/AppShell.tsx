@@ -7,7 +7,7 @@ import { useContent } from "@/lib/data/ContentProvider";
 import { useUserData } from "@/lib/data/UserDataProvider";
 import { dueReviews } from "@/lib/stats";
 import { longDate, today } from "@/lib/dates";
-import { DiagnosisIcon, QuestionsIcon, ReviewIcon, SearchIcon, SyllabusIcon, TodayIcon, Logo } from "./icons";
+import { ArrowUpRightIcon, DiagnosisIcon, QuestionsIcon, ReviewIcon, SearchIcon, SyllabusIcon, TodayIcon, Logo } from "./icons";
 import { cx } from "./ui";
 
 interface NavItem {
@@ -98,7 +98,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <SectionLabel>Material</SectionLabel>
           {MATERIAL.map(sidebarItem)}
           <a href={profile.notebooklm.geral || "https://notebooklm.google.com"} target="_blank" rel="noreferrer" className="flex items-center gap-2.5 rounded-[8px] px-3 py-[7px] text-[14px] text-ink-strong transition-colors hover:bg-line/50">
-            Áudios (NotebookLM) <span aria-hidden className="text-ink-3">↗</span>
+            Áudios (NotebookLM) <ArrowUpRightIcon className="h-3 w-3 text-ink-3" />
             <span className="sr-only">(abre em nova aba)</span>
           </a>
         </div>
@@ -111,7 +111,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className={cx("sticky top-0 z-20 border-b border-line/80", GLASS)}>
           {/* Top menu (tablet) */}
-          <nav aria-label="Navegação" className="hidden items-center gap-1 overflow-x-auto border-b border-line/80 px-4 py-2 sm:flex lg:hidden">
+          <nav aria-label="Navegação" className="relative hidden items-center gap-1 overflow-x-auto border-b border-line/80 px-4 py-2 sm:flex lg:hidden">
             <Link href="/" className="mr-2 flex shrink-0 items-center" aria-label="Rumo ao TJSP, início">
               <Logo className="h-7 w-7 text-ink" />
             </Link>

@@ -31,7 +31,7 @@ export default function TopicPage() {
   if (!topic)
     return (
       <div className="mx-auto flex max-w-4xl flex-col gap-3">
-        <h1 className="text-[22px] font-bold">Tópico não encontrado</h1>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Tópico não encontrado</h1>
         <Link href="/syllabus" className="text-[13px] font-semibold text-brand-700 hover:underline">Voltar para o edital</Link>
       </div>
     );
@@ -50,10 +50,10 @@ export default function TopicPage() {
 
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <h1 className="text-[22px] font-bold leading-tight">{topic.name}</h1>
+          <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">{topic.name}</h1>
           <span className="text-[13px] text-ink-2">{topic.syllabus_ref} · caiu {topic.occurrences}× ({topic.years.map(yearLabel).join(", ") || "ainda não caiu"})</span>
         </div>
-        <Pill tone={topic.priority === "high" ? "brand-strong" : topic.priority === "medium" ? "brand" : "neutral"}>{PRIORITY_LABEL[topic.priority]}</Pill>
+        <Pill tone={topic.priority === "high" ? "brand" : "neutral"}>{PRIORITY_LABEL[topic.priority]}</Pill>
       </header>
 
       <TopicActions topic={topic.id} subject={topic.subject} total={questions.length} />

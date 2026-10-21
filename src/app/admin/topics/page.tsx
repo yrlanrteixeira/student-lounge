@@ -6,7 +6,7 @@ import { PRIORITY_LABEL } from "@/lib/admin";
 import { ButtonLink, Heading, Pill } from "@/components/ui";
 import { AdminGuard } from "../AdminGuard";
 
-const PRIORITY_TONE = { high: "brand-strong", medium: "brand", low: "neutral" } as const;
+const PRIORITY_TONE = { high: "brand", medium: "neutral", low: "neutral" } as const;
 
 export default function AdminTopics() {
   return (
@@ -23,8 +23,8 @@ function TopicIndex() {
     <div className="flex flex-col gap-7">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <h1 className="text-[22px] font-bold">Tópicos e guia</h1>
-          <p className="text-sm text-ink-2">{TOPICS.length} tópicos. Cada um tem o texto do edital mastigado que aparece para quem estuda.</p>
+          <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Tópicos e guia</h1>
+          <p className="text-[15px] text-ink-2 sm:text-[17px]">{TOPICS.length} tópicos. Cada um tem o texto do edital mastigado que aparece para quem estuda.</p>
         </div>
         <ButtonLink href="/admin/topics/new">Novo tópico</ButtonLink>
       </header>

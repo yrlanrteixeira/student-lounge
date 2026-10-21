@@ -43,7 +43,7 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex flex-col gap-6">
-      <nav aria-label="Administração" className="-mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 pb-2">
+      <nav aria-label="Administração" className="relative -mx-1 flex gap-1 overflow-x-auto border-b border-line px-1 pb-2">
         {LINKS.map((l) => {
           const on = isActive(pathname, l.href);
           return (

@@ -16,13 +16,15 @@ export default function MockExams() {
   return (
     <div className="flex flex-col gap-7">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Simulados</h1>
-        <p className="text-sm text-ink-2">Sem gabarito durante a prova. No fim, a nota por bloco comparada com o corte.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Simulados</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">Sem gabarito durante a prova. No fim, a nota por bloco comparada com o corte.</p>
       </header>
 
-      <Link href="/mock-exams/format-2027" className="flex flex-col gap-2 rounded-card border border-brand-700 bg-brand-50 p-5 ring-[3px] ring-brand-50 transition-colors hover:bg-brand-100">
-        <Tag tone="brand-strong">RECOMENDADO</Tag>
-        <span className="text-lg font-bold">Simulado no formato 2027</span>
+      <Link href="/mock-exams/format-2027" className="flex flex-col gap-2 rounded-card border border-brand-600 bg-brand-50 p-6 transition-colors hover:bg-brand-100">
+        <span className="flex flex-wrap items-center gap-2">
+          <span className="text-[21px] font-semibold leading-tight tracking-tight">Simulado no formato 2027</span>
+          <Tag tone="brand-strong">Recomendado</Tag>
+        </span>
         <span className="text-[13px] leading-relaxed text-ink-strong">70 questões com a mesma divisão do edital (16 de Português, 30 de Direito, 24 de Gerais), montadas com as questões que você menos viu. 4 horas de prova.</span>
       </Link>
 

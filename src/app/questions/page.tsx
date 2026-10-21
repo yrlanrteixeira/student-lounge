@@ -58,8 +58,8 @@ export default function Questions() {
   return (
     <div className="flex flex-col gap-7">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Questões</h1>
-        <p className="text-sm text-ink-2">{INDEX.length} questões reais da Vunesp (TJSP 2017 a 2025), todas comentadas.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Questões</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">{INDEX.length} questões reais da Vunesp (TJSP 2017 a 2025), todas comentadas.</p>
       </header>
 
       <Card className="flex flex-col gap-5 p-5">

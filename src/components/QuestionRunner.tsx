@@ -164,9 +164,9 @@ export function QuestionRunner({ ids, context, title, subtitle }: { ids: string[
         <article className="flex min-w-0 flex-[999_1_560px] flex-col gap-5 rounded-card border border-line bg-surface p-5 sm:p-7">
           <div className="flex flex-wrap gap-2">
             <Pill tone="brand">{subjectName(q.subject)}</Pill>
-            <Pill>{topicName(q.topic)}</Pill>
+            <Pill wrap>{topicName(q.topic)}</Pill>
             <Pill>Vunesp · TJSP {yearLabel(q.year)} · Q{q.number}</Pill>
-            {q.status === "outdated" && <Tag tone="danger">DESATUALIZADA</Tag>}
+            {q.status === "outdated" && <Tag tone="danger">Desatualizada</Tag>}
           </div>
 
           {q.passage && (
@@ -226,7 +226,7 @@ export function QuestionRunner({ ids, context, title, subtitle }: { ids: string[
                   className={cx("flex min-h-11 w-full items-start gap-3.5 rounded-card px-4 py-3.5 text-left transition-colors disabled:cursor-default", style)}
                 >
                   <span className={cx("flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-full text-sm font-bold", badge)}>{l}</span>
-                  <span className="flex-1 text-[15px] leading-relaxed">{q.options[l] || <em className="text-ink-3">(alternativa em imagem — veja o recorte acima)</em>}</span>
+                  <span className="flex-1 text-[15px] leading-relaxed">{q.options[l] || <em className="text-ink-3">(alternativa em imagem: veja o recorte acima)</em>}</span>
                   {tag}
                 </button>
               );
@@ -259,7 +259,7 @@ export function QuestionRunner({ ids, context, title, subtitle }: { ids: string[
           ) : (
             <>
               <section className={cx("flex flex-col gap-2 rounded-card border p-5", missed ? "border-danger-line bg-danger-bg text-danger-ink" : "border-success-line bg-success-bg text-success-ink")}>
-                <span className="text-xl font-bold">{missed ? "Não foi dessa vez" : confidence === "unsure" ? "Acertou — mas na dúvida" : "Você acertou"}</span>
+                <span className="text-xl font-bold">{missed ? "Não foi dessa vez" : confidence === "unsure" ? "Acertou, mas na dúvida" : "Você acertou"}</span>
                 <span className="text-sm leading-relaxed">
                   Gabarito: <strong>{q.answer === "N" ? "anulada" : q.answer}</strong>. {q.explanation}
                 </span>
@@ -269,7 +269,7 @@ export function QuestionRunner({ ids, context, title, subtitle }: { ids: string[
               {mainTrap && q.trap_note && (
                 <section className="flex flex-col gap-2.5 rounded-card border border-line bg-surface p-5">
                   <div className="flex items-center gap-2">
-                    <Tag tone="trap">PEGADINHA</Tag>
+                    <Tag tone="trap">Pegadinha</Tag>
                     <span className="text-sm font-bold">{trapById[mainTrap]?.name}</span>
                   </div>
                   <p className="text-sm leading-relaxed">{q.trap_note}</p>
@@ -404,11 +404,11 @@ function Summary({ history, title }: { history: Result[]; title: string }) {
   return (
     <div className="mx-auto flex min-h-dvh max-w-2xl flex-col gap-6 px-4 py-10 sm:px-8">
       <div className="flex flex-col gap-1">
-        <span className="text-xs font-semibold tracking-wide text-brand-700">{title.toUpperCase()} · CONCLUÍDO</span>
-        <h1 className="text-2xl font-bold">
-          {correct} de {history.length} certas ({Math.round(r * 100)}%)
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">
+          {correct} de {history.length} certas
         </h1>
-        <p className="text-sm text-ink-2">{r >= 0.7 ? "Ótimo ritmo. Continue assim." : r >= 0.5 ? "Na linha do corte — os erros já foram para a revisão." : "Os erros já foram para a revisão. Leia o guia dos tópicos abaixo."}</p>
+        <p className="tabular text-[15px] font-medium text-ink-2">{title} concluído · {Math.round(r * 100)}% de acerto</p>
+        <p className="text-sm text-ink-2">{r >= 0.7 ? "Ótimo ritmo. Continue assim." : r >= 0.5 ? "Na linha do corte. Os erros já foram para a revisão." : "Os erros já foram para a revisão. Leia o guia dos tópicos abaixo."}</p>
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
         {bySubject.map(([s, x]) => (

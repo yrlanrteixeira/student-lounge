@@ -56,8 +56,8 @@ function Dashboard() {
   return (
     <div className="flex flex-col gap-7">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Administração do conteúdo</h1>
-        <p className="text-sm text-ink-2">Tudo o que está aqui fica no Supabase. O que você muda aparece para quem estuda assim que a página for recarregada.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Administração do conteúdo</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">Tudo o que está aqui fica no Supabase. O que você muda aparece para quem estuda assim que a página for recarregada.</p>
       </header>
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-3.5">

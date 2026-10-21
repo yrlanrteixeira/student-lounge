@@ -15,7 +15,7 @@ export function Card({ className, children, ...rest }: ComponentProps<"div">) {
 
 export function Heading({ children, id, className }: { children: ReactNode; id?: string; className?: string }) {
   return (
-    <h2 id={id} className={cx("text-lg font-semibold", className)}>
+    <h2 id={id} className={cx("text-[21px] font-semibold leading-tight tracking-tight", className)}>
       {children}
     </h2>
   );
@@ -38,8 +38,8 @@ export function Tag({ tone = "neutral", children, className }: { tone?: Tone; ch
   return <span className={cx("inline-flex items-center rounded-tag px-2 py-0.5 text-[11px] font-semibold whitespace-nowrap", TONES[tone], className)}>{children}</span>;
 }
 
-export function Pill({ tone = "neutral", children }: { tone?: Tone; children: ReactNode }) {
-  return <span className={cx("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold whitespace-nowrap", TONES[tone])}>{children}</span>;
+export function Pill({ tone = "neutral", children, wrap }: { tone?: Tone; children: ReactNode; wrap?: boolean }) {
+  return <span className={cx("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold", wrap ? "max-w-full" : "whitespace-nowrap", TONES[tone])}>{children}</span>;
 }
 
 export function ProgressBar({ value, color = "bg-brand-700", cutoff, label }: { value: number; color?: string; cutoff?: number; label?: string }) {
@@ -105,6 +105,18 @@ export function Loading() {
   );
 }
 
+/** Inline link with a trailing chevron, the Apple "Learn more ›" pattern. */
+export function ChevronLink({ href, children, className, ...rest }: ComponentProps<typeof Link>) {
+  return (
+    <Link href={href} className={cx("group inline-flex items-center gap-1 font-medium text-brand-700 hover:underline", className)} {...rest}>
+      {children}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-3.5 w-3.5 transition-transform motion-safe:group-hover:translate-x-0.5">
+        <path d="M9 6l6 6-6 6" />
+      </svg>
+    </Link>
+  );
+}
+
 export function pct(v: number | null | undefined) {
   return v === null || v === undefined ? "—" : `${Math.round(v * 100)}%`;
 }
@@ -133,7 +145,7 @@ export function SimpleMarkdown({ text }: { text: string }) {
       }
       const [head, ...body] = table;
       blocks.push(
-        <div key={i} className="overflow-x-auto">
+        <div key={i} className="relative overflow-x-auto">
           <table className="w-full min-w-[420px] border-collapse text-[13px]">
             <thead>
               <tr>{head?.map((c, k) => <th key={k} scope="col" className="border-b border-line px-2 py-2 text-left font-semibold">{inline(c)}</th>)}</tr>

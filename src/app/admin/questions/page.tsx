@@ -116,8 +116,8 @@ function QuestionList() {
     <div className="flex flex-col gap-6">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex flex-col gap-1">
-          <h1 className="text-[22px] font-bold">Questões</h1>
-          <p className="text-sm text-ink-2">{rows ? `${total} questões com esses filtros` : "Buscando…"}</p>
+          <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Questões</h1>
+          <p className="text-[15px] text-ink-2 sm:text-[17px]">{rows ? `${total} questões com esses filtros` : "Buscando…"}</p>
         </div>
         <ButtonLink href="/admin/questions/new">Nova questão</ButtonLink>
       </header>
