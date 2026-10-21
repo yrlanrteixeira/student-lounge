@@ -179,9 +179,9 @@ function MockExamResult({ questions, marked, title, duration }: { questions: Que
   return (
     <div className="mx-auto flex min-h-dvh max-w-3xl flex-col gap-6 px-4 py-10 sm:px-8">
       <div className="flex flex-col gap-1">
-        <span className="text-xs font-semibold tracking-wide text-brand-700">{title.toUpperCase()} · RESULTADO</span>
-        <h1 className="text-3xl font-bold">{total} de {questions.length}</h1>
-        <p className={cx("text-sm font-semibold", passed ? "text-success" : "text-danger")}>{passed ? "Passou nos dois blocos eliminatórios." : "Ficou abaixo do corte em algum bloco eliminatório."} · {formatDuration(duration)} de prova</p>
+        <h1 className="tabular text-[44px] font-semibold leading-none tracking-tight">{total} de {questions.length}</h1>
+        <p className="tabular mt-1 text-[15px] font-medium text-ink-2">{title} · {formatDuration(duration)} de prova</p>
+        <p className={cx("text-sm font-semibold", passed ? "text-success" : "text-danger")}>{passed ? "Passou nos dois blocos eliminatórios." : "Ficou abaixo do corte em algum bloco eliminatório."}</p>
       </div>
       <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-3">
         {BLOCKS.map((b) => {
@@ -199,7 +199,7 @@ function MockExamResult({ questions, marked, title, duration }: { questions: Que
       </div>
       {errors.length > 0 && (
         <section className="flex flex-col gap-2">
-          <h2 className="text-base font-semibold">Erros e em branco ({errors.length}) — já foram para a revisão</h2>
+          <h2 className="text-base font-semibold">Erros e em branco ({errors.length}), já enviados para a revisão</h2>
           <ul className="flex flex-col divide-y divide-line rounded-card border border-line bg-surface">
             {errors.map((q) => (
               <li key={q.id} className="flex flex-col">

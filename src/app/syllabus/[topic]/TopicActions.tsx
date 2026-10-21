@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useUserData } from "@/lib/data/UserDataProvider";
 import { rate, scores, topicMastery } from "@/lib/stats";
 import { Button, ButtonLink, pct } from "@/components/ui";
+import { ArrowUpRightIcon, CheckIcon } from "@/components/icons";
 
 export function TopicActions({ topic, subject, total }: { topic: string; subject: string; total: number }) {
   const { answers, topicProgress, markTopic, profile } = useUserData();
@@ -25,13 +26,14 @@ export function TopicActions({ topic, subject, total }: { topic: string; subject
       <div className="flex flex-wrap gap-2">
         <ButtonLink href={`/practice?mode=free&topic=${topic}&subject=${subject}&n=${Math.min(10, total) || 10}`}>Fazer as questões deste tópico</ButtonLink>
         <Button variant={progress?.guide_read ? "soft" : "secondary"} aria-pressed={Boolean(progress?.guide_read)} onClick={() => markTopic(topic, { guide_read: !progress?.guide_read })}>
-          {progress?.guide_read ? "Guia lido ✓" : "Marcar guia como lido"}
+          {progress?.guide_read ? <><CheckIcon className="h-3.5 w-3.5" /> Guia lido</> : "Marcar guia como lido"}
         </Button>
         <Button variant="secondary" aria-pressed={Boolean(progress?.mastered)} onClick={() => markTopic(topic, { mastered: !progress?.mastered })}>
           {progress?.mastered ? "Desmarcar dominado" : "Já domino"}
         </Button>
-        <a href={notebook || "https://notebooklm.google.com"} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center px-1 text-[13px] font-semibold text-brand-700 hover:underline">
-          Áudio no NotebookLM
+        <a href={notebook || "https://notebooklm.google.com"} target="_blank" rel="noreferrer" className="inline-flex min-h-10 items-center gap-1 px-1 text-[13px] font-medium text-brand-700 hover:underline">
+          Áudio no NotebookLM <ArrowUpRightIcon className="h-3 w-3" />
+          <span className="sr-only">(abre em nova aba)</span>
         </a>
       </div>
     </div>

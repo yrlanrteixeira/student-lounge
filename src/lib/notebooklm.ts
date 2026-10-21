@@ -11,13 +11,13 @@ export async function notebookSummary(subjectId: string) {
   const questions = new Map((await fetchQuestions([...examplesByTopic.values()].flat())).map((q) => [q.id, q]));
 
   const lines: string[] = [];
-  lines.push(`# ${s.name} — TJ-SP Escrevente (Vunesp)`, "");
+  lines.push(`# ${s.name} · TJ-SP Escrevente (Vunesp)`, "");
   lines.push(`Bloco ${s.block} · ${s.exam_questions} questões na prova.`, "");
   lines.push("## Visão geral", "", s.overview, "");
   const laws = lawsOf(subjectId);
   if (laws.length) {
     lines.push("## Lei seca cobrada", "");
-    for (const l of laws) lines.push(`- ${l.name}${l.excerpt ? ` — ${l.excerpt}` : ""}`);
+    for (const l of laws) lines.push(`- ${l.name}${l.excerpt ? `: ${l.excerpt}` : ""}`);
     lines.push("");
   }
   for (const t of topics) {

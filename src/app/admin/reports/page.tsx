@@ -52,8 +52,8 @@ function ReportQueue() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Reportes</h1>
-        <p className="text-sm text-ink-2">Problemas apontados por quem estuda. Corrija a questão e depois marque o reporte como resolvido.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Reportes</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">Problemas apontados por quem estuda. Corrija a questão e depois marque o reporte como resolvido.</p>
       </header>
 
       <div role="group" aria-label="Filtrar por situação" className="flex flex-wrap gap-2">

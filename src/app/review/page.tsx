@@ -39,8 +39,8 @@ export default function Review() {
   return (
     <div className="flex flex-col gap-7">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Revisão de erros</h1>
-        <p className="text-sm text-ink-2">Cada erro volta depois de 1, 3, 7, 15 e 30 dias. Acertou as cinco vezes, saiu da fila.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Revisão de erros</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">Cada erro volta depois de 1, 3, 7, 15 e 30 dias. Acertou as cinco vezes, saiu da fila.</p>
       </header>
 
       <div className="flex flex-wrap gap-6">

@@ -43,7 +43,7 @@ export default function Diagnosis() {
   if (answers.length < 10)
     return (
       <div className="flex flex-col gap-6">
-        <h1 className="text-[22px] font-bold">Diagnóstico</h1>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Diagnóstico</h1>
         <EmptyState title="Ainda há poucas respostas">Responda pelo menos 10 questões para o diagnóstico começar a aparecer. Ele melhora a cada bloco.</EmptyState>
       </div>
     );
@@ -55,32 +55,32 @@ export default function Diagnosis() {
   return (
     <div className="flex flex-col gap-6">
       <header className="flex flex-col gap-1">
-        <h1 className="text-[22px] font-bold">Diagnóstico</h1>
-        <p className="text-sm text-ink-2">Onde você está, o que derruba sua nota e o que estudar primeiro.</p>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">Diagnóstico</h1>
+        <p className="text-[15px] text-ink-2 sm:text-[17px]">Onde você está, o que derruba sua nota e o que estudar primeiro.</p>
       </header>
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
-        <Card className="flex flex-col gap-1 p-4">
-          <span className="text-[13px] text-ink-2">Nota projetada</span>
-          <span className="tabular text-3xl font-bold">{projected ?? "—"}<span className="text-base font-semibold text-ink-3"> / 70</span></span>
-          <span className="text-xs text-ink-3">{projected === null ? "precisa de mais matérias respondidas" : "pelo seu acerto em cada matéria"}</span>
+        <Card className="flex flex-col gap-1.5 border-brand-600 p-5">
+          <span className="text-[13px] font-medium text-brand-700">Nota projetada</span>
+          <span className="tabular text-[44px] font-semibold leading-none tracking-tight text-ink">{projected ?? "—"}<span className="text-[20px] font-medium text-ink-2"> / 70</span></span>
+          <span className="text-xs text-ink-2">{projected === null ? "Precisa de mais matérias respondidas" : "Pelo seu acerto em cada matéria"}</span>
         </Card>
-        <Card className="flex flex-col gap-1 p-4">
-          <span className="text-[13px] text-ink-2">Acerto geral</span>
-          <span className="tabular text-3xl font-bold">{pct(rate(sc.overall))}</span>
-          <span className="text-xs text-ink-3">{sc.overall.total} questões respondidas</span>
+        <Card className="flex flex-col gap-1.5 p-5">
+          <span className="text-[13px] font-medium text-ink-2">Acerto geral</span>
+          <span className="tabular text-[34px] font-semibold leading-none tracking-tight">{pct(rate(sc.overall))}</span>
+          <span className="text-xs text-ink-2">{sc.overall.total} questões respondidas</span>
         </Card>
-        <Card className="flex flex-col gap-1 p-4">
-          <span className="text-[13px] text-ink-2">Acerto quando “tenho certeza”</span>
-          <span className="tabular text-3xl font-bold">{pct(rate(sc.sure))}</span>
-          <span className={cx("text-xs", falseConfidence && falseConfidence > 0.15 ? "font-semibold text-trap" : "text-ink-3")}>
-            {falseConfidence === null ? "marque a confiança ao responder" : `${pct(falseConfidence)} de falsa certeza`}
+        <Card className="flex flex-col gap-1.5 p-5">
+          <span className="text-[13px] font-medium text-ink-2">Acerto quando “tenho certeza”</span>
+          <span className="tabular text-[34px] font-semibold leading-none tracking-tight">{pct(rate(sc.sure))}</span>
+          <span className={cx("text-xs", falseConfidence && falseConfidence > 0.15 ? "font-semibold text-trap" : "text-ink-2")}>
+            {falseConfidence === null ? "Marque a confiança ao responder" : `${pct(falseConfidence)} de falsa certeza`}
           </span>
         </Card>
-        <Card className="flex flex-col gap-1 p-4">
-          <span className="text-[13px] text-ink-2">Erros recuperados</span>
-          <span className="tabular text-3xl font-bold">{pct(recovered)}</span>
-          <span className="text-xs text-ink-3">acertou na revisão espaçada</span>
+        <Card className="flex flex-col gap-1.5 p-5">
+          <span className="text-[13px] font-medium text-ink-2">Erros recuperados</span>
+          <span className="tabular text-[34px] font-semibold leading-none tracking-tight">{pct(recovered)}</span>
+          <span className="text-xs text-ink-2">Acertou na revisão espaçada</span>
         </Card>
       </div>
 
@@ -116,36 +116,39 @@ export default function Diagnosis() {
       <section aria-labelledby="prio" className="flex flex-col gap-3">
         <div className="flex flex-col gap-1">
           <Heading id="prio">Prioridades de estudo</Heading>
-          <span className="text-[13px] text-ink-3">Quanto o tópico cai na Vunesp × peso no edital × quanto você ainda erra.</span>
+          <span className="text-[13px] text-ink-2">Quanto o tópico cai na Vunesp × peso no edital × quanto você ainda erra.</span>
         </div>
-        <Card className="overflow-x-auto">
-          <table className="w-full min-w-[620px] border-collapse text-sm">
-            <thead>
-              <tr className="text-left text-xs uppercase tracking-wide text-ink-2">
-                <th scope="col" className="px-4 py-3 font-semibold">#</th>
-                <th scope="col" className="px-2 py-3 font-semibold">Tópico</th>
-                <th scope="col" className="px-2 py-3 font-semibold">Caiu</th>
-                <th scope="col" className="px-2 py-3 font-semibold">Seu acerto</th>
-                <th scope="col" className="px-2 py-3 font-semibold">Prioridade</th>
-                <th scope="col" className="px-4 py-3"><span className="sr-only">Ação</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {ranking.slice(0, 8).map((row, k) => (
-                <tr key={row.topic} className="border-t border-subtle">
-                  <td className="px-4 py-3 font-bold text-ink-3">{k + 1}</td>
-                  <td className="px-2 py-3">
-                    <Link href={`/syllabus/${row.topic}`} className="font-semibold hover:underline">{topicName(row.topic)}</Link>
-                    <div className="text-xs text-ink-3">{subjectName(row.subject)}</div>
-                  </td>
-                  <td className="px-2 py-3 text-[13px]">{row.occurrences}× em {row.years} provas</td>
-                  <td className={cx("tabular px-2 py-3 font-bold", row.hitRate !== null && row.hitRate < 0.5 ? "text-trap" : "")}>{row.hitRate === null ? "—" : pct(row.hitRate)}</td>
-                  <td className="px-2 py-3"><Pill tone={row.level === "high" ? "brand-strong" : row.level === "medium" ? "brand" : "neutral"}>{row.level === "high" ? "Alta" : row.level === "medium" ? "Média" : "Baixa"}</Pill></td>
-                  <td className="px-4 py-3 text-right"><Link href={`/practice?mode=free&topic=${row.topic}&subject=${row.subject}&n=10`} className="text-[13px] font-semibold text-brand-700 hover:underline">Treinar 10</Link></td>
+        <Card className="overflow-hidden">
+          {/* relative: keeps the header's sr-only label (absolute) inside the scroller instead of widening the page */}
+          <div className="relative overflow-x-auto">
+            <table className="w-full min-w-[620px] border-collapse text-sm">
+              <thead>
+                <tr className="text-left text-xs text-ink-2">
+                  <th scope="col" className="px-4 py-3 font-medium">#</th>
+                  <th scope="col" className="px-2 py-3 font-medium">Tópico</th>
+                  <th scope="col" className="px-2 py-3 font-medium">Caiu</th>
+                  <th scope="col" className="px-2 py-3 font-medium">Seu acerto</th>
+                  <th scope="col" className="px-2 py-3 font-medium">Prioridade</th>
+                  <th scope="col" className="px-4 py-3"><span className="sr-only">Ação</span></th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {ranking.slice(0, 8).map((row, k) => (
+                  <tr key={row.topic} className="border-t border-subtle">
+                    <td className="tabular px-4 py-3 font-medium text-ink-2">{k + 1}</td>
+                    <td className="px-2 py-3">
+                      <Link href={`/syllabus/${row.topic}`} className="font-semibold hover:underline">{topicName(row.topic)}</Link>
+                      <div className="text-xs text-ink-3">{subjectName(row.subject)}</div>
+                    </td>
+                    <td className="px-2 py-3 text-[13px]">{row.occurrences}× em {row.years} provas</td>
+                    <td className={cx("tabular px-2 py-3 font-semibold", row.hitRate !== null && row.hitRate < 0.5 ? "text-trap" : "")}>{row.hitRate === null ? "—" : pct(row.hitRate)}</td>
+                    <td className="px-2 py-3"><Pill tone={row.level === "high" ? "brand" : "neutral"}>{row.level === "high" ? "Alta" : row.level === "medium" ? "Média" : "Baixa"}</Pill></td>
+                    <td className="px-4 py-3 text-right"><Link href={`/practice?mode=free&topic=${row.topic}&subject=${row.subject}&n=10`} className="text-[13px] font-semibold text-brand-700 hover:underline">Treinar 10</Link></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </Card>
       </section>
 
@@ -163,7 +166,7 @@ export default function Diagnosis() {
           <Card className="flex flex-col gap-3 p-4">
             {SUBJECTS.map((s) => (
               <div key={s.id} className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                <span className="w-40 shrink-0 text-[13px] font-semibold">{s.name}</span>
+                <span className="w-full shrink-0 text-[13px] font-semibold sm:w-40">{s.name}</span>
                 <div className="flex flex-1 flex-wrap gap-1.5">
                   {TOPICS.filter((t) => t.subject === s.id).map((t) => {
                     const r = rate(sc.byTopic.get(t.id));
@@ -204,9 +207,9 @@ export default function Diagnosis() {
                 <span className="text-ink-3">Marque o motivo depois de cada erro para ver este quadro.</span>
               ) : (
                 <>
-                  <span><strong>{pct(sc.causes.didnt_know / totalCauses)}</strong> não sabia o conteúdo → leia o guia do tópico</span>
-                  <span><strong>{pct(sc.causes.confused / totalCauses)}</strong> confundiu institutos → veja o “Não confunda”</span>
-                  <span><strong>{pct(sc.causes.careless / totalCauses)}</strong> falta de atenção → leia o comando duas vezes</span>
+                  <span><strong>{pct(sc.causes.didnt_know / totalCauses)}</strong> não sabia o conteúdo: leia o guia do tópico</span>
+                  <span><strong>{pct(sc.causes.confused / totalCauses)}</strong> confundiu institutos: veja o “Não confunda”</span>
+                  <span><strong>{pct(sc.causes.careless / totalCauses)}</strong> falta de atenção: leia o comando duas vezes</span>
                 </>
               )}
             </Card>
@@ -221,7 +224,7 @@ export default function Diagnosis() {
             {weeks.map((w) => (
               <div key={w.start} className="flex h-full flex-col items-center justify-end gap-1">
                 <span className="tabular text-[11px] font-semibold">{w.rate === null ? "" : pct(w.rate)}</span>
-                <div className="w-full rounded-t-[4px] bg-brand-300" style={{ height: `${(w.rate ?? 0) * 100}px` }} />
+                <div className="w-full rounded-t-[6px] bg-brand-600" style={{ height: `${(w.rate ?? 0) * 100}px` }} />
                 <span className="text-[10px] text-ink-3">{shortDate(w.start)}</span>
               </div>
             ))}

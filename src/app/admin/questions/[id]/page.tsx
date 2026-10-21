@@ -153,7 +153,7 @@ function QuestionEditor() {
         <Link href="/admin/questions" className="hover:underline">Questões</Link> › {isNew ? "Nova" : form.id}
       </nav>
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[22px] font-bold">{isNew ? "Nova questão" : `Questão ${form.id}`}</h1>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">{isNew ? "Nova questão" : `Questão ${form.id}`}</h1>
         {!isNew && <Button variant="danger" onClick={remove}>Apagar questão</Button>}
       </header>
 

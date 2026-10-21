@@ -96,7 +96,7 @@ function TopicEditor() {
         <Link href="/admin/topics" className="hover:underline">Tópicos</Link> › {isNew ? "Novo" : form.id}
       </nav>
       <header className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[22px] font-bold">{isNew ? "Novo tópico" : form.name}</h1>
+        <h1 className="text-[28px] font-semibold leading-tight tracking-tight sm:text-[34px]">{isNew ? "Novo tópico" : form.name}</h1>
         <div className="flex flex-wrap gap-2">
           {!isNew && <Link href={`/syllabus/${encodeURIComponent(form.id)}`} target="_blank" className="inline-flex min-h-10 items-center px-1 text-[13px] font-semibold text-brand-700 hover:underline">Ver como quem estuda</Link>}
           {!isNew && <Button variant="danger" onClick={remove}>Apagar tópico</Button>}

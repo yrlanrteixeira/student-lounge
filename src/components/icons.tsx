@@ -51,6 +51,21 @@ export const BackIcon = ({ className }: P) => (
     <path d="M15 18l-6-6 6-6" />
   </svg>
 );
+export const ChevronRightIcon = ({ className = "h-3.5 w-3.5" }: P) => (
+  <svg {...base} strokeWidth={2.4} className={className}>
+    <path d="M9 6l6 6-6 6" />
+  </svg>
+);
+export const ArrowUpRightIcon = ({ className = "h-3.5 w-3.5" }: P) => (
+  <svg {...base} strokeWidth={2.2} className={className}>
+    <path d="M7 17L17 7M8 7h9v9" />
+  </svg>
+);
+export const CheckIcon = ({ className = "h-4 w-4" }: P) => (
+  <svg {...base} strokeWidth={2.6} className={className}>
+    <path d="M5 12.5l4.5 4.5L19 7.5" />
+  </svg>
+);
 export const SearchIcon = ({ className }: P) => (
   <svg {...base} className={className}>
     <circle cx="11" cy="11" r="7" />
