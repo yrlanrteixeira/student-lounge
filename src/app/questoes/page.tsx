@@ -2,84 +2,85 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { useDados } from "@/lib/dados/DadosProvider";
-import { INDICE, MATERIAS, TOPICOS, questaoTreinavel, rotuloAno } from "@/lib/conteudo";
-import { placares, taxa } from "@/lib/estatisticas";
-import { BotaoLink, Cartao, Carregando, Titulo, cx, pct } from "@/components/ui";
+import { useUserData } from "@/lib/data/UserDataProvider";
+import { INDEX, SUBJECTS, TOPICS, examYears, isTrainable, yearLabel } from "@/lib/content";
+import { rate, scores } from "@/lib/stats";
+import { ButtonLink, Card, Heading, Loading, cx, pct } from "@/components/ui";
 
-const ANOS = ["2017", "2018", "2021", "2023", "2024", "2024r", "2025"];
-const FILTROS = [
-  { id: "todas", rotulo: "Todas" },
-  { id: "nao_respondidas", rotulo: "Não respondidas" },
-  { id: "erradas", rotulo: "Que errei" },
+// Filter ids go into the URL (?filtro=), so they stay in PT.
+const FILTERS = [
+  { id: "todas", label: "Todas" },
+  { id: "nao_respondidas", label: "Não respondidas" },
+  { id: "erradas", label: "Que errei" },
 ];
 
-function Chip({ ativo, onClick, children }: { ativo: boolean; onClick: () => void; children: React.ReactNode }) {
+function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
   return (
-    <button type="button" aria-pressed={ativo} onClick={onClick} className={cx("min-h-9 rounded-full border px-3 text-[13px] font-semibold transition-colors", ativo ? "border-rosa-700 bg-rosa-50 text-rosa-700" : "border-borda-forte bg-cartao text-texto-forte hover:bg-lateral")}>
+    <button type="button" aria-pressed={active} onClick={onClick} className={cx("min-h-9 rounded-full border px-3 text-[13px] font-semibold transition-colors", active ? "border-brand-700 bg-brand-50 text-brand-700" : "border-line-strong bg-surface text-ink-strong hover:bg-sidebar")}>
       {children}
     </button>
   );
 }
 
-export default function Questoes() {
-  const { carregando, respostas } = useDados();
-  const [materia, setMateria] = useState("");
-  const [topico, setTopico] = useState("");
-  const [anos, setAnos] = useState<string[]>([]);
-  const [filtro, setFiltro] = useState("todas");
+export default function Questions() {
+  const { loading, answers } = useUserData();
+  const [subject, setSubject] = useState("");
+  const [topic, setTopic] = useState("");
+  const [years, setYears] = useState<string[]>([]);
+  const [filter, setFilter] = useState("todas");
   const [n, setN] = useState(10);
-  const pl = useMemo(() => placares(respostas), [respostas]);
+  const sc = useMemo(() => scores(answers), [answers]);
+  const allYears = useMemo(() => examYears().reverse(), []);
 
-  const respondidas = useMemo(() => new Set(respostas.map((r) => r.questao_id)), [respostas]);
-  const ultimaErrada = useMemo(() => {
+  const answered = useMemo(() => new Set(answers.map((a) => a.question_id)), [answers]);
+  const lastWrong = useMemo(() => {
     const m = new Map<string, boolean>();
-    for (const r of respostas) m.set(r.questao_id, !r.correta);
+    for (const a of answers) m.set(a.question_id, !a.correct);
     return m;
-  }, [respostas]);
+  }, [answers]);
 
-  const disponiveis = INDICE.filter(
+  const available = INDEX.filter(
     (q) =>
-      questaoTreinavel(q) &&
-      (!materia || q.materia === materia) &&
-      (!topico || q.topico === topico) &&
-      (!anos.length || anos.includes(q.ano)) &&
-      (filtro !== "nao_respondidas" || !respondidas.has(q.id)) &&
-      (filtro !== "erradas" || ultimaErrada.get(q.id))
+      isTrainable(q) &&
+      (!subject || q.subject === subject) &&
+      (!topic || q.topic === topic) &&
+      (!years.length || years.includes(q.year)) &&
+      (filter !== "nao_respondidas" || !answered.has(q.id)) &&
+      (filter !== "erradas" || lastWrong.get(q.id))
   ).length;
 
-  if (carregando) return <Carregando />;
+  if (loading) return <Loading />;
 
-  const qs = new URLSearchParams({ modo: "livre", n: String(n), filtro });
-  if (materia) qs.set("materia", materia);
-  if (topico) qs.set("topico", topico);
-  if (anos.length) qs.set("anos", anos.join(","));
+  const qs = new URLSearchParams({ modo: "livre", n: String(n), filtro: filter });
+  if (subject) qs.set("materia", subject);
+  if (topic) qs.set("topico", topic);
+  if (years.length) qs.set("anos", years.join(","));
 
   return (
     <div className="flex flex-col gap-7">
       <header className="flex flex-col gap-1">
         <h1 className="text-[22px] font-bold">Questões</h1>
-        <p className="text-sm text-texto-2">{INDICE.length} questões reais da Vunesp (TJSP 2017 a 2025), todas comentadas.</p>
+        <p className="text-sm text-ink-2">{INDEX.length} questões reais da Vunesp (TJSP 2017 a 2025), todas comentadas.</p>
       </header>
 
-      <Cartao className="flex flex-col gap-5 p-5">
+      <Card className="flex flex-col gap-5 p-5">
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-2 text-[13px] font-semibold">Matéria</legend>
           <div className="flex flex-wrap gap-2">
-            <Chip ativo={!materia} onClick={() => { setMateria(""); setTopico(""); }}>Todas</Chip>
-            {MATERIAS.map((m) => (
-              <Chip key={m.id} ativo={materia === m.id} onClick={() => { setMateria(m.id); setTopico(""); }}>{m.nome}</Chip>
+            <Chip active={!subject} onClick={() => { setSubject(""); setTopic(""); }}>Todas</Chip>
+            {SUBJECTS.map((s) => (
+              <Chip key={s.id} active={subject === s.id} onClick={() => { setSubject(s.id); setTopic(""); }}>{s.name}</Chip>
             ))}
           </div>
         </fieldset>
 
-        {materia && (
+        {subject && (
           <label className="flex flex-col gap-1.5 text-[13px] font-semibold">
             Tópico
-            <select value={topico} onChange={(e) => setTopico(e.target.value)} className="h-10 rounded-botao border border-borda-forte bg-cartao px-3 text-[13px] font-normal">
+            <select value={topic} onChange={(e) => setTopic(e.target.value)} className="h-10 rounded-button border border-line-strong bg-surface px-3 text-[13px] font-normal">
               <option value="">Todos os tópicos</option>
-              {TOPICOS.filter((t) => t.materia === materia).map((t) => (
-                <option key={t.id} value={t.id}>{t.nome}</option>
+              {TOPICS.filter((t) => t.subject === subject).map((t) => (
+                <option key={t.id} value={t.id}>{t.name}</option>
               ))}
             </select>
           </label>
@@ -88,8 +89,8 @@ export default function Questoes() {
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-2 text-[13px] font-semibold">Provas</legend>
           <div className="flex flex-wrap gap-2">
-            {ANOS.map((a) => (
-              <Chip key={a} ativo={anos.includes(a)} onClick={() => setAnos((x) => (x.includes(a) ? x.filter((y) => y !== a) : [...x, a]))}>{rotuloAno(a)}</Chip>
+            {allYears.map((y) => (
+              <Chip key={y} active={years.includes(y)} onClick={() => setYears((x) => (x.includes(y) ? x.filter((z) => z !== y) : [...x, y]))}>{yearLabel(y)}</Chip>
             ))}
           </div>
         </fieldset>
@@ -98,36 +99,36 @@ export default function Questoes() {
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-2 text-[13px] font-semibold">Quais</legend>
             <div className="flex flex-wrap gap-2">
-              {FILTROS.map((f) => <Chip key={f.id} ativo={filtro === f.id} onClick={() => setFiltro(f.id)}>{f.rotulo}</Chip>)}
+              {FILTERS.map((f) => <Chip key={f.id} active={filter === f.id} onClick={() => setFilter(f.id)}>{f.label}</Chip>)}
             </div>
           </fieldset>
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-2 text-[13px] font-semibold">Quantas</legend>
             <div className="flex flex-wrap gap-2">
-              {[5, 10, 20, 30].map((x) => <Chip key={x} ativo={n === x} onClick={() => setN(x)}>{x}</Chip>)}
+              {[5, 10, 20, 30].map((x) => <Chip key={x} active={n === x} onClick={() => setN(x)}>{x}</Chip>)}
             </div>
           </fieldset>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-borda pt-4">
-          <span className="text-[13px] text-texto-2">{disponiveis} questões com esses filtros</span>
-          <BotaoLink href={`/praticar?${qs}`} tamanho="g" aria-disabled={disponiveis === 0} className={disponiveis === 0 ? "pointer-events-none opacity-50" : ""}>
-            Começar {Math.min(n, disponiveis)} questões
-          </BotaoLink>
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
+          <span className="text-[13px] text-ink-2">{available} questões com esses filtros</span>
+          <ButtonLink href={`/praticar?${qs}`} size="l" aria-disabled={available === 0} className={available === 0 ? "pointer-events-none opacity-50" : ""}>
+            Começar {Math.min(n, available)} questões
+          </ButtonLink>
         </div>
-      </Cartao>
+      </Card>
 
       <section aria-labelledby="por-materia" className="flex flex-col gap-3.5">
-        <Titulo id="por-materia">Por matéria</Titulo>
+        <Heading id="por-materia">Por matéria</Heading>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-3.5">
-          {MATERIAS.map((m) => {
-            const total = INDICE.filter((q) => q.materia === m.id && questaoTreinavel(q)).length;
-            const feitas = INDICE.filter((q) => q.materia === m.id && respondidas.has(q.id)).length;
-            const t = taxa(pl.porMateria.get(m.id), 1);
+          {SUBJECTS.map((s) => {
+            const total = INDEX.filter((q) => q.subject === s.id && isTrainable(q)).length;
+            const done = INDEX.filter((q) => q.subject === s.id && answered.has(q.id)).length;
+            const r = rate(sc.bySubject.get(s.id), 1);
             return (
-              <Link key={m.id} href={`/praticar?modo=livre&materia=${m.id}&n=10`} className="flex flex-col gap-1.5 rounded-cartao border border-borda px-4 py-3.5 transition-colors hover:bg-lateral">
-                <span className="text-sm font-semibold">{m.nome}</span>
-                <span className="text-xs text-texto-3">{feitas} de {total} feitas · acerto {pct(t)} · {m.questoes_2026} na prova</span>
+              <Link key={s.id} href={`/praticar?modo=livre&materia=${s.id}&n=10`} className="flex flex-col gap-1.5 rounded-card border border-line px-4 py-3.5 transition-colors hover:bg-sidebar">
+                <span className="text-sm font-semibold">{s.name}</span>
+                <span className="text-xs text-ink-3">{done} de {total} feitas · acerto {pct(r)} · {s.exam_questions} na prova</span>
               </Link>
             );
           })}

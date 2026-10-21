@@ -2,89 +2,90 @@
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useDados } from "@/lib/dados/DadosProvider";
-import { useMissao } from "@/lib/useMissao";
-import { INDICE, nomeMateria, nomeTopico, pegadinhaPorId } from "@/lib/conteudo";
-import { selecionar } from "@/lib/plano";
-import { hoje, isoLocal } from "@/lib/datas";
-import type { Contexto } from "@/lib/tipos";
-import { Runner } from "@/components/Runner";
-import { Carregando } from "@/components/ui";
+import { useUserData } from "@/lib/data/UserDataProvider";
+import { useMission } from "@/lib/useMission";
+import { INDEX, subjectName, topicName, trapById } from "@/lib/content";
+import { pickQuestions } from "@/lib/plan";
+import { toIsoDate, today } from "@/lib/dates";
+import type { AnswerContext } from "@/lib/types";
+import { QuestionRunner } from "@/components/QuestionRunner";
+import { Loading } from "@/components/ui";
 
-interface Sessao {
+interface Session {
   ids: string[];
-  contexto: Contexto;
-  titulo: string;
-  subtitulo?: string;
+  context: AnswerContext;
+  title: string;
+  subtitle?: string;
 }
 
-function Praticar() {
+// The URL keeps PT values (?modo=missao|revisao|pegadinha|erros|livre).
+function Practice() {
   const params = useSearchParams();
-  const { carregando, respostas } = useDados();
-  const missao = useMissao();
-  const [sessao, setSessao] = useState<Sessao | null>(null);
+  const { loading, answers } = useUserData();
+  const mission = useMission();
+  const [session, setSession] = useState<Session | null>(null);
 
   useEffect(() => {
-    if (carregando || sessao) return;
-    const modo = params.get("modo") ?? "livre";
-    const dia = hoje();
-    const feitasHoje = (ctx: string) => new Set(respostas.filter((r) => r.contexto === ctx && isoLocal(new Date(r.created_at)) === dia).map((r) => r.questao_id));
+    if (loading || session) return;
+    const mode = params.get("modo") ?? "livre";
+    const day = today();
+    const doneToday = (ctx: AnswerContext) => new Set(answers.filter((a) => a.context === ctx && toIsoDate(new Date(a.created_at)) === day).map((a) => a.question_id));
     const n = Math.min(60, Math.max(1, Number(params.get("n") ?? 10)));
-    const materia = params.get("materia") ?? "";
-    const topico = params.get("topico") ?? "";
-    const anos = (params.get("anos") ?? "").split(",").filter(Boolean);
-    const filtro = params.get("filtro") ?? "todas";
+    const subject = params.get("materia") ?? "";
+    const topic = params.get("topico") ?? "";
+    const years = (params.get("anos") ?? "").split(",").filter(Boolean);
+    const filter = params.get("filtro") ?? "todas";
 
-    let s: Sessao;
-    if (modo === "missao") {
-      const p = missao.passos.find((x) => x.tipo === "bloco");
-      const feitas = feitasHoje("missao");
-      s = { ids: p && "ids" in p ? p.ids.filter((id) => !feitas.has(id)) : [], contexto: "missao", titulo: "Bloco de hoje", subtitulo: missao.rotulo };
-    } else if (modo === "revisao") {
-      const p = missao.passos.find((x) => x.tipo === "revisao");
-      const feitas = feitasHoje("revisao");
-      s = { ids: p && "ids" in p ? p.ids.filter((id) => !feitas.has(id)) : [], contexto: "revisao", titulo: "Revisão de erros", subtitulo: "Repetição espaçada: 1, 3, 7, 15 e 30 dias" };
-    } else if (modo === "pegadinha") {
-      const p = missao.passos.find((x) => x.tipo === "pegadinha");
-      const feitas = feitasHoje("pegadinha");
-      const nome = p && p.tipo === "pegadinha" ? pegadinhaPorId[p.pegadinha]?.nome : "";
-      s = { ids: p && "ids" in p ? p.ids.filter((id) => !feitas.has(id)) : [], contexto: "pegadinha", titulo: "Pegadinha do dia", subtitulo: nome };
-    } else if (modo === "erros") {
-      const ultima = new Map<string, boolean>();
-      for (const r of respostas) ultima.set(r.questao_id, r.correta);
-      const ids = INDICE.filter((q) => ultima.get(q.id) === false && (!materia || q.materia === materia)).map((q) => q.id);
-      s = { ids: ids.slice(0, n), contexto: "revisao", titulo: "Caderno de erros", subtitulo: materia ? nomeMateria(materia) : "Todas as matérias" };
+    let s: Session;
+    if (mode === "missao") {
+      const step = mission.steps.find((x) => x.kind === "practice");
+      const done = doneToday("mission");
+      s = { ids: step && "ids" in step ? step.ids.filter((id) => !done.has(id)) : [], context: "mission", title: "Bloco de hoje", subtitle: mission.label };
+    } else if (mode === "revisao") {
+      const step = mission.steps.find((x) => x.kind === "review");
+      const done = doneToday("review");
+      s = { ids: step && "ids" in step ? step.ids.filter((id) => !done.has(id)) : [], context: "review", title: "Revisão de erros", subtitle: "Repetição espaçada: 1, 3, 7, 15 e 30 dias" };
+    } else if (mode === "pegadinha") {
+      const step = mission.steps.find((x) => x.kind === "trap");
+      const done = doneToday("trap");
+      const name = step && step.kind === "trap" ? trapById[step.trap]?.name : "";
+      s = { ids: step && "ids" in step ? step.ids.filter((id) => !done.has(id)) : [], context: "trap", title: "Pegadinha do dia", subtitle: name };
+    } else if (mode === "erros") {
+      const last = new Map<string, boolean>();
+      for (const a of answers) last.set(a.question_id, a.correct);
+      const ids = INDEX.filter((q) => last.get(q.id) === false && (!subject || q.subject === subject)).map((q) => q.id);
+      s = { ids: ids.slice(0, n), context: "review", title: "Caderno de erros", subtitle: subject ? subjectName(subject) : "Todas as matérias" };
     } else {
-      const respondidas = new Set(respostas.map((r) => r.questao_id));
-      const ultimaErrada = new Map<string, boolean>();
-      for (const r of respostas) ultimaErrada.set(r.questao_id, !r.correta);
-      const pool = INDICE.filter(
+      const answered = new Set(answers.map((a) => a.question_id));
+      const lastWrong = new Map<string, boolean>();
+      for (const a of answers) lastWrong.set(a.question_id, !a.correct);
+      const pool = INDEX.filter(
         (q) =>
-          (!materia || q.materia === materia) &&
-          (!topico || q.topico === topico) &&
-          (!anos.length || anos.includes(q.ano)) &&
-          (filtro !== "nao_respondidas" || !respondidas.has(q.id)) &&
-          (filtro !== "erradas" || ultimaErrada.get(q.id))
+          (!subject || q.subject === subject) &&
+          (!topic || q.topic === topic) &&
+          (!years.length || years.includes(q.year)) &&
+          (filter !== "nao_respondidas" || !answered.has(q.id)) &&
+          (filter !== "erradas" || lastWrong.get(q.id))
       );
-      const ids = selecionar({ pool, n, respostas, semente: `${Date.now()}`, foco: topico || undefined });
+      const ids = pickQuestions({ pool, n, answers, seed: `${Date.now()}`, focus: topic || undefined });
       s = {
         ids,
-        contexto: topico ? "topico" : "livre",
-        titulo: topico ? "Treino do tópico" : "Questões",
-        subtitulo: topico ? nomeTopico(topico) : materia ? nomeMateria(materia) : "Todas as matérias",
+        context: topic ? "topic" : "free",
+        title: topic ? "Treino do tópico" : "Questões",
+        subtitle: topic ? topicName(topic) : subject ? subjectName(subject) : "Todas as matérias",
       };
     }
-    setSessao(s);
-  }, [carregando, sessao, params, respostas, missao]);
+    setSession(s);
+  }, [loading, session, params, answers, mission]);
 
-  if (!sessao) return <Carregando />;
-  return <Runner ids={sessao.ids} contexto={sessao.contexto} titulo={sessao.titulo} subtitulo={sessao.subtitulo} />;
+  if (!session) return <Loading />;
+  return <QuestionRunner ids={session.ids} context={session.context} title={session.title} subtitle={session.subtitle} />;
 }
 
-export default function Pagina() {
+export default function PracticePage() {
   return (
-    <Suspense fallback={<Carregando />}>
-      <Praticar />
+    <Suspense fallback={<Loading />}>
+      <Practice />
     </Suspense>
   );
 }

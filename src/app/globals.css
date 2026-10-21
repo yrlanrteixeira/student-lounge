@@ -3,56 +3,56 @@
 @theme {
   --font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
 
-  --color-rosa-25: #fef6fb;
-  --color-rosa-50: #fdf2fa;
-  --color-rosa-100: #fce7f6;
-  --color-rosa-200: #fcceee;
-  --color-rosa-300: #faa7e0;
-  --color-rosa-400: #f670c7;
-  --color-rosa-500: #ee46bc;
-  --color-rosa-600: #dd2590;
-  --color-rosa-700: #c11574;
-  --color-rosa-800: #9e165f;
-  --color-rosa-900: #851651;
+  --color-brand-25: #fef6fb;
+  --color-brand-50: #fdf2fa;
+  --color-brand-100: #fce7f6;
+  --color-brand-200: #fcceee;
+  --color-brand-300: #faa7e0;
+  --color-brand-400: #f670c7;
+  --color-brand-500: #ee46bc;
+  --color-brand-600: #dd2590;
+  --color-brand-700: #c11574;
+  --color-brand-800: #9e165f;
+  --color-brand-900: #851651;
 
-  --color-fundo: #f6eef2;
-  --color-lateral: #fdf8fa;
-  --color-cartao: #ffffff;
-  --color-suave: #f8eef3;
-  --color-borda: #f1e3ea;
-  --color-borda-forte: #d0d5dd;
-  --color-texto: #1d2939;
-  --color-texto-forte: #344054;
-  --color-texto-2: #475467;
-  --color-texto-3: #667085;
-  --color-desativado: #98a2b3;
+  --color-canvas: #f6eef2;
+  --color-sidebar: #fdf8fa;
+  --color-surface: #ffffff;
+  --color-subtle: #f8eef3;
+  --color-line: #f1e3ea;
+  --color-line-strong: #d0d5dd;
+  --color-ink: #1d2939;
+  --color-ink-strong: #344054;
+  --color-ink-2: #475467;
+  --color-ink-3: #667085;
+  --color-disabled: #98a2b3;
 
-  --color-acerto: #079455;
-  --color-acerto-700: #067647;
-  --color-acerto-fundo: #ecfdf3;
-  --color-acerto-borda: #abefc6;
-  --color-erro: #b42318;
-  --color-erro-500: #f04438;
-  --color-erro-fundo: #fef3f2;
-  --color-erro-borda: #fecdca;
-  --color-pegadinha: #b54708;
-  --color-pegadinha-fundo: #fffaeb;
-  --color-pegadinha-borda: #fedf89;
-  --color-lilas: #6941c6;
-  --color-lilas-500: #7a5af8;
-  --color-lilas-fundo: #f5f3ff;
-  --color-mel: #9a6b00;
-  --color-mel-fundo: #fef7dc;
-  --color-menta: #0e7568;
-  --color-menta-fundo: #f0fdf9;
+  --color-success: #079455;
+  --color-success-700: #067647;
+  --color-success-bg: #ecfdf3;
+  --color-success-line: #abefc6;
+  --color-danger: #b42318;
+  --color-danger-500: #f04438;
+  --color-danger-bg: #fef3f2;
+  --color-danger-line: #fecdca;
+  --color-trap: #b54708;
+  --color-trap-bg: #fffaeb;
+  --color-trap-line: #fedf89;
+  --color-lilac: #6941c6;
+  --color-lilac-500: #7a5af8;
+  --color-lilac-bg: #f5f3ff;
+  --color-honey: #9a6b00;
+  --color-honey-bg: #fef7dc;
+  --color-mint: #0e7568;
+  --color-mint-bg: #f0fdf9;
 
   --radius-tag: 6px;
-  --radius-botao: 8px;
-  --radius-cartao: 12px;
-  --radius-moldura: 16px;
+  --radius-button: 8px;
+  --radius-card: 12px;
+  --radius-frame: 16px;
 
   --shadow-xs: 0 1px 2px rgb(16 24 40 / 0.05);
-  --shadow-moldura: 0 12px 32px rgb(16 24 40 / 0.06);
+  --shadow-frame: 0 12px 32px rgb(16 24 40 / 0.06);
 }
 
 html {
@@ -60,8 +60,8 @@ html {
 }
 
 body {
-  background: var(--color-fundo);
-  color: var(--color-texto);
+  background: var(--color-canvas);
+  color: var(--color-ink);
   font-family: var(--font-sans);
 }
 
@@ -74,7 +74,7 @@ textarea {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-rosa-700);
+  outline: 2px solid var(--color-brand-700);
   outline-offset: 2px;
 }
 
