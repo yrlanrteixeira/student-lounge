@@ -54,16 +54,16 @@ export function ProgressBar({ value, color = "bg-brand-700", cutoff, label }: { 
 
 type Variant = "primary" | "secondary" | "soft" | "text" | "danger";
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-brand-700 text-white hover:bg-brand-800 disabled:bg-line disabled:text-disabled",
-  secondary: "border border-line-strong bg-surface text-ink-strong hover:bg-sidebar disabled:text-disabled",
+  primary: "bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 disabled:bg-line disabled:text-disabled",
+  secondary: "bg-line text-ink hover:bg-line-strong/80 active:bg-line-strong disabled:text-disabled",
   soft: "bg-brand-50 text-brand-700 hover:bg-brand-100",
   text: "text-brand-700 hover:text-brand-800 hover:underline px-1",
-  danger: "border border-danger-line bg-surface text-danger hover:bg-danger-bg disabled:text-disabled",
+  danger: "bg-danger-bg text-danger hover:bg-danger-line/60 disabled:text-disabled",
 };
-const SIZES = { s: "min-h-8 px-3 text-xs", m: "min-h-10 px-4 text-[13px]", l: "min-h-12 px-5 text-[15px]" };
+const SIZES = { s: "min-h-8 px-3.5 text-xs", m: "min-h-9 px-[18px] text-[14px]", l: "min-h-11 px-[22px] text-[15px]" };
 
 export function buttonClasses(v: Variant = "primary", s: keyof typeof SIZES = "m", extra?: string) {
-  return cx("inline-flex items-center justify-center gap-2 rounded-button font-semibold transition-colors disabled:cursor-not-allowed", VARIANTS[v], SIZES[s], extra);
+  return cx("inline-flex items-center justify-center gap-2 rounded-pill font-medium transition-colors disabled:cursor-not-allowed", VARIANTS[v], SIZES[s], extra);
 }
 
 export function Button({ variant = "primary", size = "m", className, ...rest }: ComponentProps<"button"> & { variant?: Variant; size?: keyof typeof SIZES }) {
@@ -76,13 +76,13 @@ export function ButtonLink({ variant = "primary", size = "m", className, ...rest
 
 export function Notice({ tone = "trap", children }: { tone?: "trap" | "danger" | "brand" | "success"; children: ReactNode }) {
   const t = {
-    trap: "bg-trap-bg border-trap-line text-[#7A2E0E]",
-    danger: "bg-danger-bg border-danger-line text-[#7A271A]",
+    trap: "bg-trap-bg border-trap-line text-trap-ink",
+    danger: "bg-danger-bg border-danger-line text-danger-ink",
     brand: "bg-brand-50 border-brand-100 text-brand-900",
-    success: "bg-success-bg border-success-line text-[#074D31]",
+    success: "bg-success-bg border-success-line text-success-ink",
   }[tone];
   return (
-    <div role="note" className={cx("rounded-[10px] border px-4 py-3 text-[13px] leading-relaxed", t)}>
+    <div role="note" className={cx("rounded-[12px] border px-4 py-3 text-[13px] leading-relaxed", t)}>
       {children}
     </div>
   );
@@ -90,7 +90,7 @@ export function Notice({ tone = "trap", children }: { tone?: "trap" | "danger" |
 
 export function EmptyState({ title, children }: { title: string; children?: ReactNode }) {
   return (
-    <div className="flex flex-col items-center gap-1.5 rounded-card border border-dashed border-line p-6 text-center">
+    <div className="flex flex-col items-center gap-1.5 rounded-card bg-subtle p-6 text-center">
       <span className="text-sm font-semibold">{title}</span>
       {children && <span className="text-xs text-ink-3">{children}</span>}
     </div>
@@ -109,8 +109,8 @@ export function pct(v: number | null | undefined) {
   return v === null || v === undefined ? "—" : `${Math.round(v * 100)}%`;
 }
 
-export const inputClasses = "h-10 w-full rounded-button border border-line-strong bg-surface px-3 text-[13px] outline-none focus:border-brand-700 focus:ring-4 focus:ring-brand-100";
-export const textareaClasses = "min-h-24 w-full rounded-button border border-line-strong bg-surface px-3 py-2 text-[13px] leading-relaxed outline-none focus:border-brand-700 focus:ring-4 focus:ring-brand-100";
+export const inputClasses = "h-10 w-full rounded-button border border-line-strong bg-surface px-3 text-[14px] outline-none transition-shadow focus:border-brand-600 focus:ring-4 focus:ring-brand-600/15 focus-visible:outline-none";
+export const textareaClasses = "min-h-24 w-full rounded-button border border-line-strong bg-surface px-3 py-2 text-[14px] leading-relaxed outline-none transition-shadow focus:border-brand-600 focus:ring-4 focus:ring-brand-600/15 focus-visible:outline-none";
 
 /** Renders the simple markdown (tables, bold, lists) used in the guide. */
 export function SimpleMarkdown({ text }: { text: string }) {

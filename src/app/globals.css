@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
+/* Apple Developer style: cool neutrals, hairlines, almost no shadow, one accent (brand pink). */
 @theme {
-  --font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", system-ui, sans-serif;
+  /* SF Pro on Apple devices; Inter (its closest open substitute) everywhere else. */
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter Variable", "Segoe UI", system-ui, sans-serif;
 
   --color-brand-25: #fef6fb;
   --color-brand-50: #fdf2fa;
@@ -15,67 +17,89 @@
   --color-brand-800: #9e165f;
   --color-brand-900: #851651;
 
-  --color-canvas: #f6eef2;
-  --color-sidebar: #fdf8fa;
+  --color-canvas: #f5f5f7;
+  --color-sidebar: #f5f5f7;
   --color-surface: #ffffff;
-  --color-subtle: #f8eef3;
-  --color-line: #f1e3ea;
-  --color-line-strong: #d0d5dd;
-  --color-ink: #1d2939;
-  --color-ink-strong: #344054;
-  --color-ink-2: #475467;
-  --color-ink-3: #667085;
-  --color-disabled: #98a2b3;
+  --color-subtle: #f2f2f5;
+  --color-line: #e5e5ea;
+  --color-line-strong: #d2d2d7;
+  --color-ink: #1d1d1f;
+  --color-ink-strong: #333336;
+  --color-ink-2: #6e6e73;
+  /* Apple's #86868b falls under 4.5:1 on white; this keeps small labels readable. */
+  --color-ink-3: #737378;
+  --color-disabled: #aeaeb2;
 
-  --color-success: #079455;
-  --color-success-700: #067647;
-  --color-success-bg: #ecfdf3;
-  --color-success-line: #abefc6;
-  --color-danger: #b42318;
-  --color-danger-500: #f04438;
-  --color-danger-bg: #fef3f2;
-  --color-danger-line: #fecdca;
-  --color-trap: #b54708;
-  --color-trap-bg: #fffaeb;
-  --color-trap-line: #fedf89;
-  --color-lilac: #6941c6;
-  --color-lilac-500: #7a5af8;
-  --color-lilac-bg: #f5f3ff;
-  --color-honey: #9a6b00;
-  --color-honey-bg: #fef7dc;
-  --color-mint: #0e7568;
-  --color-mint-bg: #f0fdf9;
+  /* System colours in their accessible (darker) variants, so they pass as text on white. */
+  --color-success: #248a3d;
+  --color-success-700: #1b6f30;
+  --color-success-bg: #ebf7ee;
+  --color-success-line: #bfe6c9;
+  --color-success-ink: #0f4d22;
+  --color-danger: #d70015;
+  --color-danger-500: #ff3b30;
+  --color-danger-bg: #fff1f0;
+  --color-danger-line: #ffcdc8;
+  --color-danger-ink: #8a0010;
+  --color-trap: #c93400;
+  --color-trap-soft: #ffb574;
+  --color-trap-bg: #fff5eb;
+  --color-trap-line: #ffd9b8;
+  --color-trap-ink: #7a2200;
+  --color-lilac: #5856d6;
+  --color-lilac-500: #7d7aff;
+  --color-lilac-bg: #f0f0fd;
+  --color-honey: #a05a00;
+  --color-honey-bg: #fff8e1;
+  --color-mint: #0b7d76;
+  --color-mint-bg: #e6f6f4;
 
   --radius-tag: 6px;
-  --radius-button: 8px;
-  --radius-card: 12px;
-  --radius-frame: 16px;
+  --radius-button: 10px;
+  --radius-pill: 980px;
+  --radius-card: 18px;
+  --radius-frame: 22px;
 
-  --shadow-xs: 0 1px 2px rgb(16 24 40 / 0.05);
-  --shadow-frame: 0 12px 32px rgb(16 24 40 / 0.06);
+  --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-frame: 0 10px 40px rgb(0 0 0 / 0.06);
 }
 
-html {
-  -webkit-text-size-adjust: 100%;
-}
+/* In a layer so utility classes (tracking-*, outline-*) still win over these defaults. */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
 
-body {
-  background: var(--color-canvas);
-  color: var(--color-ink);
-  font-family: var(--font-sans);
-}
+  body {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    letter-spacing: -0.011em;
+    font-kerning: normal;
+  }
 
-a,
-button,
-input,
-select,
-textarea {
-  -webkit-tap-highlight-color: transparent;
-}
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.021em;
+  }
 
-:focus-visible {
-  outline: 2px solid var(--color-brand-700);
-  outline-offset: 2px;
+  ::selection {
+    background: var(--color-brand-100);
+  }
+
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-brand-600) 55%, transparent);
+    outline-offset: 2px;
+  }
 }
 
 .tabular {

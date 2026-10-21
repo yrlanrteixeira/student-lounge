@@ -76,12 +76,12 @@ export default function TopicPage() {
         )}
         {topic.common_traps.length > 0 && (
           <section className="flex flex-col gap-2.5 rounded-card bg-trap-bg p-5">
-            <h2 className="text-sm font-bold text-[#7A2E0E]">Pegadinhas da Vunesp</h2>
-            <ul className="flex list-disc flex-col gap-2 pl-5 text-[13px] leading-relaxed text-[#7A2E0E]">
+            <h2 className="text-sm font-bold text-trap-ink">Pegadinhas da Vunesp</h2>
+            <ul className="flex list-disc flex-col gap-2 pl-5 text-[13px] leading-relaxed text-trap-ink">
               {topic.common_traps.map((c) => <li key={c}>{c}</li>)}
             </ul>
             {topTraps.length > 0 && (
-              <p className="text-xs text-[#7A2E0E]">Tipos mais comuns aqui: {topTraps.map(([t, n]) => `${trapById[t]?.name.toLowerCase()} (${n})`).join(", ")}.</p>
+              <p className="text-xs text-trap-ink">Tipos mais comuns aqui: {topTraps.map(([t, n]) => `${trapById[t]?.name.toLowerCase()} (${n})`).join(", ")}.</p>
             )}
           </section>
         )}
