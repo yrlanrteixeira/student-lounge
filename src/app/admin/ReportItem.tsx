@@ -38,7 +38,7 @@ export function ReportItem({ report, showQuestion, onChanged }: { report: Report
       </div>
       {showQuestion && (
         <p className="text-[13px] text-ink-2">
-          <Link href={`/admin/questoes/${encodeURIComponent(report.question_id)}`} className="font-semibold text-brand-700 hover:underline">{report.question_id}</Link>
+          <Link href={`/admin/questions/${encodeURIComponent(report.question_id)}`} className="font-semibold text-brand-700 hover:underline">{report.question_id}</Link>
           {report.question && (
             <>
               {" "}· gabarito {report.question.answer} · <span className="line-clamp-2 inline">{report.question.statement}</span>
@@ -54,7 +54,7 @@ export function ReportItem({ report, showQuestion, onChanged }: { report: Report
       {error && <Notice tone="danger">{error}</Notice>}
       <div className="flex flex-wrap gap-2">
         {showQuestion && (
-          <Link href={`/admin/questoes/${encodeURIComponent(report.question_id)}`} className="inline-flex min-h-8 items-center px-1 text-xs font-semibold text-brand-700 hover:underline">
+          <Link href={`/admin/questions/${encodeURIComponent(report.question_id)}`} className="inline-flex min-h-8 items-center px-1 text-xs font-semibold text-brand-700 hover:underline">
             Editar questão
           </Link>
         )}

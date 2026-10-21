@@ -9,12 +9,11 @@ import { EmptyState, Loading, Notice, cx } from "@/components/ui";
 import { AdminGuard } from "../AdminGuard";
 import { ReportItem, type ReportWithQuestion } from "../ReportItem";
 
-// The URL keeps PT values; the DB uses the EN status.
 const FILTERS: { key: string; status: ReportStatus | null; label: string }[] = [
-  { key: "aberto", status: "open", label: REPORT_STATUS_LABEL.open },
-  { key: "resolvido", status: "resolved", label: REPORT_STATUS_LABEL.resolved },
-  { key: "descartado", status: "dismissed", label: REPORT_STATUS_LABEL.dismissed },
-  { key: "todos", status: null, label: "Todos" },
+  { key: "open", status: "open", label: REPORT_STATUS_LABEL.open },
+  { key: "resolved", status: "resolved", label: REPORT_STATUS_LABEL.resolved },
+  { key: "dismissed", status: "dismissed", label: REPORT_STATUS_LABEL.dismissed },
+  { key: "all", status: null, label: "Todos" },
 ];
 
 export default function AdminReports() {

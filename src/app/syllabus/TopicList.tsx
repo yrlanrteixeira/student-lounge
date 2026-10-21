@@ -26,7 +26,7 @@ export function TopicList({ topics, showSubject }: { topics: Topic[]; showSubjec
         const hit = rate(sc.byTopic.get(t.id), 1);
         return (
           <li key={t.id}>
-            <Link href={`/edital/${t.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3.5 transition-colors hover:bg-sidebar sm:px-5">
+            <Link href={`/syllabus/${t.id}`} className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3.5 transition-colors hover:bg-sidebar sm:px-5">
               <span className="flex min-w-0 flex-[1_1_260px] flex-col gap-0.5">
                 <span className="text-sm font-semibold">{t.name}</span>
                 <span className="text-xs text-ink-3">

@@ -73,7 +73,7 @@ export function MockExam({ ids, title, minutes }: { ids: string[]; title: string
       <div role="alert" className="mx-auto flex min-h-dvh max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
         <p className="text-lg font-semibold">Não foi possível carregar as questões.</p>
         <p className="text-sm text-ink-2">{error}</p>
-        <ButtonLink href="/simulados">Voltar para Simulados</ButtonLink>
+        <ButtonLink href="/mock-exams">Voltar para Simulados</ButtonLink>
       </div>
     );
   if (!questions) return <Loading />;
@@ -86,7 +86,7 @@ export function MockExam({ ids, title, minutes }: { ids: string[]; title: string
   return (
     <div className="min-h-dvh bg-canvas">
       <header className="sticky top-0 z-10 flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-line bg-surface px-4 py-3 sm:px-8">
-        <Link href="/simulados" aria-label="Sair do simulado" className="flex h-11 w-11 items-center justify-center rounded-card border border-line text-ink-strong hover:bg-sidebar">
+        <Link href="/mock-exams" aria-label="Sair do simulado" className="flex h-11 w-11 items-center justify-center rounded-card border border-line text-ink-strong hover:bg-sidebar">
           <CloseIcon />
         </Link>
         <div className="flex min-w-0 flex-1 flex-col">
@@ -225,7 +225,7 @@ function MockExamResult({ questions, marked, title, duration }: { questions: Que
       )}
       <div className="flex flex-wrap gap-3">
         <ButtonLink href="/" size="l">Voltar para Hoje</ButtonLink>
-        <ButtonLink href="/diagnostico" variant="secondary" size="l">Ver diagnóstico</ButtonLink>
+        <ButtonLink href="/diagnosis" variant="secondary" size="l">Ver diagnóstico</ButtonLink>
       </div>
     </div>
   );

@@ -50,7 +50,7 @@ export default function Review() {
             <span className="text-4xl font-bold">{due.length}</span>
           </div>
           {due.length ? (
-            <ButtonLink href="/praticar?modo=revisao" size="l" className="self-start">Revisar agora</ButtonLink>
+            <ButtonLink href="/practice?mode=review" size="l" className="self-start">Revisar agora</ButtonLink>
           ) : (
             <EmptyState title="Nenhum erro para revisar hoje">Os próximos aparecem nos dias abaixo.</EmptyState>
           )}
@@ -71,9 +71,9 @@ export default function Review() {
         </Card>
       </div>
 
-      <section aria-labelledby="caderno" className="flex flex-col gap-3.5">
+      <section aria-labelledby="mistake-notebook" className="flex flex-col gap-3.5">
         <div className="flex flex-col gap-1">
-          <Heading id="caderno">Caderno de erros</Heading>
+          <Heading id="mistake-notebook">Caderno de erros</Heading>
           <p className="text-[13px] text-ink-2">Questões cuja última resposta foi errada. Treine quando quiser, fora da fila.</p>
         </div>
         {mistakeBook.size === 0 ? (
@@ -81,7 +81,7 @@ export default function Review() {
         ) : (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3.5">
             {SUBJECTS.filter((s) => mistakeBook.get(s.id)).map((s) => (
-              <Link key={s.id} href={`/praticar?modo=erros&materia=${s.id}&n=20`} className="flex flex-col gap-1 rounded-card border border-line px-4 py-3.5 hover:bg-sidebar">
+              <Link key={s.id} href={`/practice?mode=mistakes&subject=${s.id}&n=20`} className="flex flex-col gap-1 rounded-card border border-line px-4 py-3.5 hover:bg-sidebar">
                 <span className="text-sm font-semibold">{s.name}</span>
                 <span className="text-xs text-ink-3">{mistakeBook.get(s.id)} questões para refazer</span>
               </Link>

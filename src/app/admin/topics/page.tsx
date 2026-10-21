@@ -26,7 +26,7 @@ function TopicIndex() {
           <h1 className="text-[22px] font-bold">Tópicos e guia</h1>
           <p className="text-sm text-ink-2">{TOPICS.length} tópicos. Cada um tem o texto do edital mastigado que aparece para quem estuda.</p>
         </div>
-        <ButtonLink href="/admin/topicos/novo">Novo tópico</ButtonLink>
+        <ButtonLink href="/admin/topics/new">Novo tópico</ButtonLink>
       </header>
 
       {SUBJECTS.map((s) => {
@@ -42,7 +42,7 @@ function TopicIndex() {
               <ul className="flex flex-col divide-y divide-line rounded-card border border-line">
                 {topics.map((t) => (
                   <li key={t.id}>
-                    <Link href={`/admin/topicos/${encodeURIComponent(t.id)}`} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-4 py-3 transition-colors hover:bg-sidebar">
+                    <Link href={`/admin/topics/${encodeURIComponent(t.id)}`} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-4 py-3 transition-colors hover:bg-sidebar">
                       <span className="flex min-w-0 flex-[1_1_260px] flex-col gap-0.5">
                         <span className="text-sm font-semibold">{t.name}</span>
                         <span className="text-xs text-ink-3">

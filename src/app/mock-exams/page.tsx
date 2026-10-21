@@ -20,7 +20,7 @@ export default function MockExams() {
         <p className="text-sm text-ink-2">Sem gabarito durante a prova. No fim, a nota por bloco comparada com o corte.</p>
       </header>
 
-      <Link href="/simulados/formato-2027" className="flex flex-col gap-2 rounded-card border border-brand-700 bg-brand-50 p-5 ring-[3px] ring-brand-50 transition-colors hover:bg-brand-100">
+      <Link href="/mock-exams/format-2027" className="flex flex-col gap-2 rounded-card border border-brand-700 bg-brand-50 p-5 ring-[3px] ring-brand-50 transition-colors hover:bg-brand-100">
         <Tag tone="brand-strong">RECOMENDADO</Tag>
         <span className="text-lg font-bold">Simulado no formato 2027</span>
         <span className="text-[13px] leading-relaxed text-ink-strong">70 questões com a mesma divisão do edital (16 de Português, 30 de Direito, 24 de Gerais), montadas com as questões que você menos viu. 4 horas de prova.</span>
@@ -30,7 +30,7 @@ export default function MockExams() {
         <Heading id="originals">Provas originais</Heading>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-3.5">
           {originals.map((p) => (
-            <Link key={p.year} href={`/simulados/${p.year}`} className="flex flex-col gap-1 rounded-card border border-line px-4 py-3.5 hover:bg-sidebar">
+            <Link key={p.year} href={`/mock-exams/${p.year}`} className="flex flex-col gap-1 rounded-card border border-line px-4 py-3.5 hover:bg-sidebar">
               <span className="flex items-center gap-2 text-sm font-semibold">
                 TJSP {yearLabel(p.year)} {p.currentFormat && <Tag tone="success">Formato atual</Tag>}
               </span>

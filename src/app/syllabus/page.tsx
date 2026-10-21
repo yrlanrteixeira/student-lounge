@@ -33,14 +33,14 @@ function SyllabusContent() {
         <header className="flex flex-col gap-1">
           <span className="text-xs font-semibold tracking-wide text-brand-700">BUSCA NO EDITAL</span>
           <h1 className="text-[22px] font-bold">“{search}”</h1>
-          <p className="text-sm text-ink-2">{found.length} tópicos encontrados. <Link href="/edital" className="font-semibold text-brand-700 hover:underline">Limpar busca</Link></p>
+          <p className="text-sm text-ink-2">{found.length} tópicos encontrados. <Link href="/syllabus" className="font-semibold text-brand-700 hover:underline">Limpar busca</Link></p>
         </header>
         <TopicList topics={found} showSubject />
       </div>
     );
   }
 
-  const subject = SUBJECTS.find((s) => s.id === params.get("materia")) ?? SUBJECTS[0];
+  const subject = SUBJECTS.find((s) => s.id === params.get("subject")) ?? SUBJECTS[0];
   if (!subject) return <p className="text-sm text-ink-2">Nenhuma matéria cadastrada ainda.</p>;
   const topics = TOPICS.filter((t) => t.subject === subject.id);
   const laws = lawsOf(subject.id);
@@ -70,7 +70,7 @@ function SyllabusContent() {
                 BLOCO {b.id} · {b.minimum ? `mínimo ${b.minimum} de ${b.questions}` : "classificatório"}
               </span>
               {SUBJECTS.filter((s) => s.block === b.id).map((s) => (
-                <Link key={s.id} href={`/edital?materia=${s.id}`} aria-current={s.id === subject.id ? "page" : undefined} className={cx("flex justify-between rounded-button px-2.5 py-2 text-sm", s.id === subject.id ? "bg-brand-50 font-semibold text-brand-700" : "text-ink hover:bg-subtle")}>
+                <Link key={s.id} href={`/syllabus?subject=${s.id}`} aria-current={s.id === subject.id ? "page" : undefined} className={cx("flex justify-between rounded-button px-2.5 py-2 text-sm", s.id === subject.id ? "bg-brand-50 font-semibold text-brand-700" : "text-ink hover:bg-subtle")}>
                   <span>{s.name}</span>
                   <span className={s.id === subject.id ? "" : "text-ink-2"}>{s.exam_questions} q</span>
                 </Link>

@@ -7,11 +7,10 @@ import { INDEX, SUBJECTS, TOPICS, examYears, isTrainable, yearLabel } from "@/li
 import { rate, scores } from "@/lib/stats";
 import { ButtonLink, Card, Heading, Loading, cx, pct } from "@/components/ui";
 
-// Filter ids go into the URL (?filtro=), so they stay in PT.
 const FILTERS = [
-  { id: "todas", label: "Todas" },
-  { id: "nao_respondidas", label: "Não respondidas" },
-  { id: "erradas", label: "Que errei" },
+  { id: "all", label: "Todas" },
+  { id: "unanswered", label: "Não respondidas" },
+  { id: "wrong", label: "Que errei" },
 ];
 
 function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
@@ -27,7 +26,7 @@ export default function Questions() {
   const [subject, setSubject] = useState("");
   const [topic, setTopic] = useState("");
   const [years, setYears] = useState<string[]>([]);
-  const [filter, setFilter] = useState("todas");
+  const [filter, setFilter] = useState("all");
   const [n, setN] = useState(10);
   const sc = useMemo(() => scores(answers), [answers]);
   const allYears = useMemo(() => examYears().reverse(), []);
@@ -45,16 +44,16 @@ export default function Questions() {
       (!subject || q.subject === subject) &&
       (!topic || q.topic === topic) &&
       (!years.length || years.includes(q.year)) &&
-      (filter !== "nao_respondidas" || !answered.has(q.id)) &&
-      (filter !== "erradas" || lastWrong.get(q.id))
+      (filter !== "unanswered" || !answered.has(q.id)) &&
+      (filter !== "wrong" || lastWrong.get(q.id))
   ).length;
 
   if (loading) return <Loading />;
 
-  const qs = new URLSearchParams({ modo: "livre", n: String(n), filtro: filter });
-  if (subject) qs.set("materia", subject);
-  if (topic) qs.set("topico", topic);
-  if (years.length) qs.set("anos", years.join(","));
+  const qs = new URLSearchParams({ mode: "free", n: String(n), filter });
+  if (subject) qs.set("subject", subject);
+  if (topic) qs.set("topic", topic);
+  if (years.length) qs.set("years", years.join(","));
 
   return (
     <div className="flex flex-col gap-7">
@@ -112,21 +111,21 @@ export default function Questions() {
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-4">
           <span className="text-[13px] text-ink-2">{available} questões com esses filtros</span>
-          <ButtonLink href={`/praticar?${qs}`} size="l" aria-disabled={available === 0} className={available === 0 ? "pointer-events-none opacity-50" : ""}>
+          <ButtonLink href={`/practice?${qs}`} size="l" aria-disabled={available === 0} className={available === 0 ? "pointer-events-none opacity-50" : ""}>
             Começar {Math.min(n, available)} questões
           </ButtonLink>
         </div>
       </Card>
 
-      <section aria-labelledby="por-materia" className="flex flex-col gap-3.5">
-        <Heading id="por-materia">Por matéria</Heading>
+      <section aria-labelledby="by-subject" className="flex flex-col gap-3.5">
+        <Heading id="by-subject">Por matéria</Heading>
         <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-3.5">
           {SUBJECTS.map((s) => {
             const total = INDEX.filter((q) => q.subject === s.id && isTrainable(q)).length;
             const done = INDEX.filter((q) => q.subject === s.id && answered.has(q.id)).length;
             const r = rate(sc.bySubject.get(s.id), 1);
             return (
-              <Link key={s.id} href={`/praticar?modo=livre&materia=${s.id}&n=10`} className="flex flex-col gap-1.5 rounded-card border border-line px-4 py-3.5 transition-colors hover:bg-sidebar">
+              <Link key={s.id} href={`/practice?mode=free&subject=${s.id}&n=10`} className="flex flex-col gap-1.5 rounded-card border border-line px-4 py-3.5 transition-colors hover:bg-sidebar">
                 <span className="text-sm font-semibold">{s.name}</span>
                 <span className="text-xs text-ink-3">{done} de {total} feitas · acerto {pct(r)} · {s.exam_questions} na prova</span>
               </Link>

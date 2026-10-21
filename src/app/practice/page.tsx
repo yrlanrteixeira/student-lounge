@@ -18,7 +18,6 @@ interface Session {
   subtitle?: string;
 }
 
-// The URL keeps PT values (?modo=missao|revisao|pegadinha|erros|livre).
 function Practice() {
   const params = useSearchParams();
   const { loading, answers } = useUserData();
@@ -27,30 +26,30 @@ function Practice() {
 
   useEffect(() => {
     if (loading || session) return;
-    const mode = params.get("modo") ?? "livre";
+    const mode = params.get("mode") ?? "free";
     const day = today();
     const doneToday = (ctx: AnswerContext) => new Set(answers.filter((a) => a.context === ctx && toIsoDate(new Date(a.created_at)) === day).map((a) => a.question_id));
     const n = Math.min(60, Math.max(1, Number(params.get("n") ?? 10)));
-    const subject = params.get("materia") ?? "";
-    const topic = params.get("topico") ?? "";
-    const years = (params.get("anos") ?? "").split(",").filter(Boolean);
-    const filter = params.get("filtro") ?? "todas";
+    const subject = params.get("subject") ?? "";
+    const topic = params.get("topic") ?? "";
+    const years = (params.get("years") ?? "").split(",").filter(Boolean);
+    const filter = params.get("filter") ?? "all";
 
     let s: Session;
-    if (mode === "missao") {
+    if (mode === "mission") {
       const step = mission.steps.find((x) => x.kind === "practice");
       const done = doneToday("mission");
       s = { ids: step && "ids" in step ? step.ids.filter((id) => !done.has(id)) : [], context: "mission", title: "Bloco de hoje", subtitle: mission.label };
-    } else if (mode === "revisao") {
+    } else if (mode === "review") {
       const step = mission.steps.find((x) => x.kind === "review");
       const done = doneToday("review");
       s = { ids: step && "ids" in step ? step.ids.filter((id) => !done.has(id)) : [], context: "review", title: "Revisão de erros", subtitle: "Repetição espaçada: 1, 3, 7, 15 e 30 dias" };
-    } else if (mode === "pegadinha") {
+    } else if (mode === "trap") {
       const step = mission.steps.find((x) => x.kind === "trap");
       const done = doneToday("trap");
       const name = step && step.kind === "trap" ? trapById[step.trap]?.name : "";
       s = { ids: step && "ids" in step ? step.ids.filter((id) => !done.has(id)) : [], context: "trap", title: "Pegadinha do dia", subtitle: name };
-    } else if (mode === "erros") {
+    } else if (mode === "mistakes") {
       const last = new Map<string, boolean>();
       for (const a of answers) last.set(a.question_id, a.correct);
       const ids = INDEX.filter((q) => last.get(q.id) === false && (!subject || q.subject === subject)).map((q) => q.id);
@@ -64,8 +63,8 @@ function Practice() {
           (!subject || q.subject === subject) &&
           (!topic || q.topic === topic) &&
           (!years.length || years.includes(q.year)) &&
-          (filter !== "nao_respondidas" || !answered.has(q.id)) &&
-          (filter !== "erradas" || lastWrong.get(q.id))
+          (filter !== "unanswered" || !answered.has(q.id)) &&
+          (filter !== "wrong" || lastWrong.get(q.id))
       );
       const ids = pickQuestions({ pool, n, answers, seed: `${Date.now()}`, focus: topic || undefined });
       s = {

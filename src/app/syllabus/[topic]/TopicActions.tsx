@@ -23,7 +23,7 @@ export function TopicActions({ topic, subject, total }: { topic: string; subject
         <span>{mastery === "mastered" ? "Dominado" : mastery === "in_progress" ? "Em progresso" : "Não iniciado"}</span>
       </div>
       <div className="flex flex-wrap gap-2">
-        <ButtonLink href={`/praticar?modo=livre&topico=${topic}&materia=${subject}&n=${Math.min(10, total) || 10}`}>Fazer as questões deste tópico</ButtonLink>
+        <ButtonLink href={`/practice?mode=free&topic=${topic}&subject=${subject}&n=${Math.min(10, total) || 10}`}>Fazer as questões deste tópico</ButtonLink>
         <Button variant={progress?.guide_read ? "soft" : "secondary"} aria-pressed={Boolean(progress?.guide_read)} onClick={() => markTopic(topic, { guide_read: !progress?.guide_read })}>
           {progress?.guide_read ? "Guia lido ✓" : "Marcar guia como lido"}
         </Button>

@@ -15,7 +15,7 @@ export default function MockExamPage({ params }: { params: Promise<{ id: string 
 
   useEffect(() => {
     if (loading || ids) return;
-    if (id === "formato-2027") {
+    if (id === "format-2027") {
       const seen = new Set(answers.map((a) => a.question_id));
       // Portuguese: one contiguous block of 16 from the least seen exam (keeps passages whole)
       const ptYear = examYears()
@@ -37,7 +37,7 @@ export default function MockExamPage({ params }: { params: Promise<{ id: string 
   }, [loading, ids, id, answers]);
 
   if (!ids) return <Loading />;
-  const title = id === "formato-2027" ? "Simulado formato 2027" : `Prova TJSP ${yearLabel(id)}`;
+  const title = id === "format-2027" ? "Simulado formato 2027" : `Prova TJSP ${yearLabel(id)}`;
   const minutes = ids.length > 70 ? 300 : 240;
   return <MockExam ids={ids} title={title} minutes={minutes} />;
 }

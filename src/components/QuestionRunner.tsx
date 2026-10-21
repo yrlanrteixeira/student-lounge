@@ -314,7 +314,7 @@ export function QuestionRunner({ ids, context, title, subtitle }: { ids: string[
               )}
 
               <div className="flex gap-2.5">
-                <ButtonLink href={`/edital/${q.topic}`} variant="secondary" size="l" className="flex-1" target="_blank">
+                <ButtonLink href={`/syllabus/${q.topic}`} variant="secondary" size="l" className="flex-1" target="_blank">
                   Ver no guia
                 </ButtonLink>
                 <Button size="l" onClick={next} className="flex-1">
@@ -428,7 +428,7 @@ function Summary({ history, title }: { history: Result[]; title: string }) {
                   <span className="text-[13px] font-semibold">{topicName(e.question.topic)}</span>
                   <span className="text-xs text-ink-3">TJSP {yearLabel(e.question.year)} · Q{e.question.number} · você marcou {e.choice}, era {e.question.answer}</span>
                 </span>
-                <Link href={`/edital/${e.question.topic}`} className="shrink-0 text-xs font-semibold text-brand-700 hover:underline">Guia</Link>
+                <Link href={`/syllabus/${e.question.topic}`} className="shrink-0 text-xs font-semibold text-brand-700 hover:underline">Guia</Link>
               </li>
             ))}
           </ul>
@@ -436,7 +436,7 @@ function Summary({ history, title }: { history: Result[]; title: string }) {
       )}
       <div className="flex flex-wrap gap-3">
         <ButtonLink href="/" size="l">Voltar para Hoje</ButtonLink>
-        <ButtonLink href="/diagnostico" variant="secondary" size="l">Ver diagnóstico</ButtonLink>
+        <ButtonLink href="/diagnosis" variant="secondary" size="l">Ver diagnóstico</ButtonLink>
       </div>
     </div>
   );

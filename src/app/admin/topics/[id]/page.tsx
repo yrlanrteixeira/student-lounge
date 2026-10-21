@@ -33,7 +33,7 @@ const lines = (text: string) => text.split("\n").map((l) => l.trim()).filter(Boo
 
 function TopicEditor() {
   const routeId = decodeURIComponent(useParams<{ id: string }>().id);
-  const isNew = routeId === "novo";
+  const isNew = routeId === "new";
   const existing = topicById[routeId];
   const router = useRouter();
   const { reload } = useContent();
@@ -78,7 +78,7 @@ function TopicEditor() {
     if (error) return setErrors([describeDbError(error)]);
     await reload();
     setSaved(true);
-    if (isNew) router.replace(`/admin/topicos/${encodeURIComponent(row.id)}`);
+    if (isNew) router.replace(`/admin/topics/${encodeURIComponent(row.id)}`);
   };
 
   const remove = async () => {
@@ -87,18 +87,18 @@ function TopicEditor() {
     const { error } = await browserClient().from("topics").delete().eq("id", form.id);
     if (error) return setErrors([error.code === "23503" ? "Ainda há questões usando este tópico. Mude o tópico delas antes de apagar." : describeDbError(error)]);
     await reload();
-    router.push("/admin/topicos");
+    router.push("/admin/topics");
   };
 
   return (
     <form onSubmit={save} className="mx-auto flex max-w-4xl flex-col gap-6">
       <nav aria-label="Caminho" className="text-[13px] text-ink-3">
-        <Link href="/admin/topicos" className="hover:underline">Tópicos</Link> › {isNew ? "Novo" : form.id}
+        <Link href="/admin/topics" className="hover:underline">Tópicos</Link> › {isNew ? "Novo" : form.id}
       </nav>
       <header className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-[22px] font-bold">{isNew ? "Novo tópico" : form.name}</h1>
         <div className="flex flex-wrap gap-2">
-          {!isNew && <Link href={`/edital/${encodeURIComponent(form.id)}`} target="_blank" className="inline-flex min-h-10 items-center px-1 text-[13px] font-semibold text-brand-700 hover:underline">Ver como quem estuda</Link>}
+          {!isNew && <Link href={`/syllabus/${encodeURIComponent(form.id)}`} target="_blank" className="inline-flex min-h-10 items-center px-1 text-[13px] font-semibold text-brand-700 hover:underline">Ver como quem estuda</Link>}
           {!isNew && <Button variant="danger" onClick={remove}>Apagar tópico</Button>}
         </div>
       </header>

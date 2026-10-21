@@ -36,7 +36,7 @@ function Field({ label, hint, children, wide }: { label: string; hint?: string; 
 
 function QuestionEditor() {
   const routeId = decodeURIComponent(useParams<{ id: string }>().id);
-  const isNew = routeId === "nova";
+  const isNew = routeId === "new";
   const router = useRouter();
   const { reload } = useContent();
   const [form, setForm] = useState<Question | null>(isNew ? normalizeQuestion({ subject: SUBJECTS[0]?.id ?? "" }) : null);
@@ -98,7 +98,7 @@ function QuestionEditor() {
     if (error) return setErrors([describeDbError(error)]);
     await reload();
     setSaved(true);
-    if (isNew) router.replace(`/admin/questoes/${encodeURIComponent(row.id)}`);
+    if (isNew) router.replace(`/admin/questions/${encodeURIComponent(row.id)}`);
   };
 
   const upload = async (file: File) => {
@@ -142,7 +142,7 @@ function QuestionEditor() {
     const { error } = await browserClient().from("questions").delete().eq("id", form.id);
     if (error) return setErrors([describeDbError(error)]);
     await reload();
-    router.push("/admin/questoes");
+    router.push("/admin/questions");
   };
 
   const preview = imageUrl(form.image);
@@ -150,7 +150,7 @@ function QuestionEditor() {
   return (
     <form onSubmit={save} className="flex flex-col gap-6">
       <nav aria-label="Caminho" className="text-[13px] text-ink-3">
-        <Link href="/admin/questoes" className="hover:underline">Questões</Link> › {isNew ? "Nova" : form.id}
+        <Link href="/admin/questions" className="hover:underline">Questões</Link> › {isNew ? "Nova" : form.id}
       </nav>
       <header className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-[22px] font-bold">{isNew ? "Nova questão" : `Questão ${form.id}`}</h1>
@@ -298,8 +298,8 @@ function QuestionEditor() {
       </div>
 
       {!isNew && (
-        <section aria-labelledby="reportes" className="flex flex-col gap-3">
-          <Heading id="reportes">Reportes desta questão</Heading>
+        <section aria-labelledby="reports" className="flex flex-col gap-3">
+          <Heading id="reports">Reportes desta questão</Heading>
           {reports.length === 0 ? (
             <EmptyState title="Nenhum reporte">Quando alguém apontar um problema, ele aparece aqui.</EmptyState>
           ) : (

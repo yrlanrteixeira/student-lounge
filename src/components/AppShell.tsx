@@ -20,13 +20,13 @@ interface NavItem {
 
 const STUDY: NavItem[] = [
   { href: "/", label: "Hoje", short: "Hoje", Icon: TodayIcon },
-  { href: "/questoes", label: "Questões", short: "Questões", Icon: QuestionsIcon },
-  { href: "/revisao", label: "Revisão de erros", short: "Revisão", Icon: ReviewIcon, counter: true },
-  { href: "/simulados", label: "Simulados", short: "Simulados" },
-  { href: "/diagnostico", label: "Diagnóstico", short: "Diagnóstico", Icon: DiagnosisIcon },
+  { href: "/questions", label: "Questões", short: "Questões", Icon: QuestionsIcon },
+  { href: "/review", label: "Revisão de erros", short: "Revisão", Icon: ReviewIcon, counter: true },
+  { href: "/mock-exams", label: "Simulados", short: "Simulados" },
+  { href: "/diagnosis", label: "Diagnóstico", short: "Diagnóstico", Icon: DiagnosisIcon },
 ];
-const MATERIAL: NavItem[] = [{ href: "/edital", label: "Edital mastigado", short: "Edital", Icon: SyllabusIcon }];
-const ACCOUNT: NavItem[] = [{ href: "/configuracoes", label: "Configurações", short: "Ajustes" }];
+const MATERIAL: NavItem[] = [{ href: "/syllabus", label: "Edital mastigado", short: "Edital", Icon: SyllabusIcon }];
+const ACCOUNT: NavItem[] = [{ href: "/settings", label: "Configurações", short: "Ajustes" }];
 const ADMIN: NavItem[] = [{ href: "/admin", label: "Administração", short: "Admin" }];
 const PHONE = [STUDY[0], STUDY[1], STUDY[2], STUDY[4], MATERIAL[0]];
 
@@ -43,7 +43,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [search, setSearch] = useState("");
   const due = useMemo(() => dueReviews(reviews).length, [reviews]);
 
-  const frameless = pathname.startsWith("/praticar") || pathname.startsWith("/login") || /^\/simulados\/.+/.test(pathname);
+  const frameless = pathname.startsWith("/practice") || pathname.startsWith("/login") || /^\/mock-exams\/.+/.test(pathname);
   if (frameless) return <>{children}</>;
 
   const name = profile.name || email?.split("@")[0] || "estudante";
@@ -131,11 +131,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               className="hidden h-[38px] w-60 items-center gap-2 rounded-button border border-line pl-3 pr-2 sm:flex"
               onSubmit={(e) => {
                 e.preventDefault();
-                router.push(`/edital?q=${encodeURIComponent(search)}`);
+                router.push(`/syllabus?q=${encodeURIComponent(search)}`);
               }}
             >
-              <label htmlFor="busca" className="sr-only">Buscar no edital</label>
-              <input id="busca" type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar artigo, tópico…" className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-ink-3" />
+              <label htmlFor="search" className="sr-only">Buscar no edital</label>
+              <input id="search" type="search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Buscar artigo, tópico…" className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-ink-3" />
             </form>
           </header>
 

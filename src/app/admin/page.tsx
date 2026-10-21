@@ -46,10 +46,10 @@ function Dashboard() {
   };
 
   const stats = [
-    { label: "Questões", value: INDEX.length, href: "/admin/questoes" },
-    { label: "Reportes abertos", value: openReports ?? "…", href: "/admin/reportes" },
-    { label: "Sem a imagem necessária", value: missingImages ?? "…", href: "/admin/questoes?imagem=sem" },
-    { label: "Tópicos", value: TOPICS.length, href: "/admin/topicos" },
+    { label: "Questões", value: INDEX.length, href: "/admin/questions" },
+    { label: "Reportes abertos", value: openReports ?? "…", href: "/admin/reports" },
+    { label: "Sem a imagem necessária", value: missingImages ?? "…", href: "/admin/questions?image=missing" },
+    { label: "Tópicos", value: TOPICS.length, href: "/admin/topics" },
     { label: "Matérias", value: SUBJECTS.length },
   ];
 
@@ -85,7 +85,7 @@ function Dashboard() {
         <ul className="flex flex-wrap gap-x-6 gap-y-2 text-[13px]">
           {(Object.keys(STATUS_LABEL) as QuestionStatus[]).map((s) => (
             <li key={s}>
-              <Link href={`/admin/questoes?status=${s}`} className="hover:underline">
+              <Link href={`/admin/questions?status=${s}`} className="hover:underline">
                 {STATUS_LABEL[s]}: <strong>{byStatus[s] ?? 0}</strong>
               </Link>
             </li>
@@ -97,16 +97,16 @@ function Dashboard() {
         <Heading>Como alimentar e tratar o conteúdo</Heading>
         <ol className="flex list-decimal flex-col gap-2 pl-5 text-[13px] leading-relaxed text-ink-strong">
           <li>
-            <strong>Alimentar:</strong> para muitas questões de uma vez, use <Link href="/admin/importar" className="font-semibold text-brand-700 hover:underline">Importar</Link> com um arquivo JSON no formato do modelo. Para uma questão só, use <Link href="/admin/questoes/nova" className="font-semibold text-brand-700 hover:underline">Nova questão</Link>.
+            <strong>Alimentar:</strong> para muitas questões de uma vez, use <Link href="/admin/import" className="font-semibold text-brand-700 hover:underline">Importar</Link> com um arquivo JSON no formato do modelo. Para uma questão só, use <Link href="/admin/questions/new" className="font-semibold text-brand-700 hover:underline">Nova questão</Link>.
           </li>
           <li>
-            <strong>Tratar:</strong> quem estuda aponta problemas pelo botão “Reportar problema”. Eles aparecem em <Link href="/admin/reportes" className="font-semibold text-brand-700 hover:underline">Reportes</Link>; corrija a questão e marque como resolvido.
+            <strong>Tratar:</strong> quem estuda aponta problemas pelo botão “Reportar problema”. Eles aparecem em <Link href="/admin/reports" className="font-semibold text-brand-700 hover:underline">Reportes</Link>; corrija a questão e marque como resolvido.
           </li>
           <li>
             <strong>Tirar de circulação:</strong> em vez de apagar, mude a situação da questão para “Anulada”, “Desatualizada” ou “Fora do edital”. Anuladas não entram mais nos treinos.
           </li>
           <li>
-            <strong>Guia:</strong> o texto de cada tópico do edital mastigado se edita em <Link href="/admin/topicos" className="font-semibold text-brand-700 hover:underline">Tópicos</Link>.
+            <strong>Guia:</strong> o texto de cada tópico do edital mastigado se edita em <Link href="/admin/topics" className="font-semibold text-brand-700 hover:underline">Tópicos</Link>.
           </li>
         </ol>
       </Card>
@@ -120,7 +120,7 @@ function Dashboard() {
           <Button variant="secondary" onClick={() => downloadFile("modelo-importacao.json", JSON.stringify(TEMPLATE, null, 2), "application/json")}>
             Baixar modelo de importação
           </Button>
-          <ButtonLink href="/admin/importar" variant="secondary">Importar</ButtonLink>
+          <ButtonLink href="/admin/import" variant="secondary">Importar</ButtonLink>
         </div>
       </Card>
     </div>

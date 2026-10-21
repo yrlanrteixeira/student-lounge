@@ -135,13 +135,13 @@ export default function Diagnosis() {
                 <tr key={row.topic} className="border-t border-subtle">
                   <td className="px-4 py-3 font-bold text-ink-3">{k + 1}</td>
                   <td className="px-2 py-3">
-                    <Link href={`/edital/${row.topic}`} className="font-semibold hover:underline">{topicName(row.topic)}</Link>
+                    <Link href={`/syllabus/${row.topic}`} className="font-semibold hover:underline">{topicName(row.topic)}</Link>
                     <div className="text-xs text-ink-3">{subjectName(row.subject)}</div>
                   </td>
                   <td className="px-2 py-3 text-[13px]">{row.occurrences}× em {row.years} provas</td>
                   <td className={cx("tabular px-2 py-3 font-bold", row.hitRate !== null && row.hitRate < 0.5 ? "text-trap" : "")}>{row.hitRate === null ? "—" : pct(row.hitRate)}</td>
                   <td className="px-2 py-3"><Pill tone={row.level === "high" ? "brand-strong" : row.level === "medium" ? "brand" : "neutral"}>{row.level === "high" ? "Alta" : row.level === "medium" ? "Média" : "Baixa"}</Pill></td>
-                  <td className="px-4 py-3 text-right"><Link href={`/praticar?modo=livre&topico=${row.topic}&materia=${row.subject}&n=10`} className="text-[13px] font-semibold text-brand-700 hover:underline">Treinar 10</Link></td>
+                  <td className="px-4 py-3 text-right"><Link href={`/practice?mode=free&topic=${row.topic}&subject=${row.subject}&n=10`} className="text-[13px] font-semibold text-brand-700 hover:underline">Treinar 10</Link></td>
                 </tr>
               ))}
             </tbody>
@@ -168,7 +168,7 @@ export default function Diagnosis() {
                   {TOPICS.filter((t) => t.subject === s.id).map((t) => {
                     const r = rate(sc.byTopic.get(t.id));
                     return (
-                      <Link key={t.id} href={`/edital/${t.id}`} title={t.name} className={cx("rounded-button px-2 py-1 text-xs font-semibold", cellColor(r))}>
+                      <Link key={t.id} href={`/syllabus/${t.id}`} title={t.name} className={cx("rounded-button px-2 py-1 text-xs font-semibold", cellColor(r))}>
                         {t.short_name} {r === null ? "" : pct(r)}
                       </Link>
                     );

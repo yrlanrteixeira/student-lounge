@@ -42,7 +42,7 @@ Abra http://localhost:3000.
    select id from auth.users where email = 'seu-email@exemplo.com';
    ```
 6. **Project Settings → API**: copie a *Project URL* e a chave *anon public*.
-7. Carregue o conteúdo em `/admin/importar` (veja abaixo).
+7. Carregue o conteúdo em `/admin/import` (veja abaixo).
 
 ### 2. Vercel (site)
 1. Suba esta pasta para um repositório no GitHub.
@@ -68,10 +68,10 @@ Abra o site no Safari (iPhone) ou Chrome (Android) e use **Adicionar à Tela de 
 
 | Quero… | Onde |
 |---|---|
-| Subir muitas questões de uma vez | `/admin/importar` |
-| Criar ou corrigir uma questão, trocar a imagem | `/admin/questoes` |
-| Ver problemas apontados por quem estuda | `/admin/reportes` |
-| Editar o guia de um tópico ou criar tópico | `/admin/topicos` |
+| Subir muitas questões de uma vez | `/admin/import` |
+| Criar ou corrigir uma questão, trocar a imagem | `/admin/questions` |
+| Ver problemas apontados por quem estuda | `/admin/reports` |
+| Editar o guia de um tópico ou criar tópico | `/admin/topics` |
 | Backup completo | `/admin`, botão "Exportar conteúdo (JSON)" |
 | Matérias, tipos de pegadinha, lei seca, dados do edital | Exportar, editar o JSON e importar de volta |
 
@@ -141,7 +141,19 @@ src/
 supabase/schema.sql    tabelas, validações e segurança
 ```
 
-O código está em inglês; os textos da tela, as URLs e os ids de conteúdo (`portugues`, `pt.interpretacao`) ficam em português.
+Código, pastas, URLs e banco estão em inglês; os textos da tela e os ids de conteúdo (`portugues`, `pt.interpretacao`) ficam em português.
+
+| Tela | URL |
+|---|---|
+| Hoje | `/` |
+| Questões | `/questions` |
+| Resolver questões | `/practice?mode=mission\|review\|trap\|mistakes\|free` |
+| Revisão de erros | `/review` |
+| Simulados | `/mock-exams`, `/mock-exams/format-2027`, `/mock-exams/<ano>` |
+| Diagnóstico | `/diagnosis` |
+| Edital mastigado | `/syllabus`, `/syllabus/<tópico>` |
+| Configurações | `/settings` |
+| Administração | `/admin`, `/admin/questions`, `/admin/import`, `/admin/reports`, `/admin/topics` |
 
 ## Pontos para conferir
 

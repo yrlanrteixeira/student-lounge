@@ -9,10 +9,10 @@ import { ButtonLink, cx } from "@/components/ui";
 
 const LINKS = [
   { href: "/admin", label: "Painel" },
-  { href: "/admin/questoes", label: "Questões" },
-  { href: "/admin/importar", label: "Importar" },
-  { href: "/admin/reportes", label: "Reportes", badge: true },
-  { href: "/admin/topicos", label: "Tópicos" },
+  { href: "/admin/questions", label: "Questões" },
+  { href: "/admin/import", label: "Importar" },
+  { href: "/admin/reports", label: "Reportes", badge: true },
+  { href: "/admin/topics", label: "Tópicos" },
 ];
 
 function isActive(pathname: string, href: string) {

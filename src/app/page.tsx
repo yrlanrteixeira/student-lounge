@@ -35,7 +35,7 @@ function StepCard({ step, index, current }: { step: Step; index: number; current
       title = "Revisar erros vencidos";
       meta = step.ids.length ? `${step.ids.length} questões · repetição espaçada` : "Nada vencido hoje";
       progress = step.ids.length ? step.done / step.ids.length : 1;
-      if (step.ids.length && !done) action = <Link href="/praticar?modo=revisao" className="text-xs font-semibold text-brand-700 hover:underline">Revisar agora →</Link>;
+      if (step.ids.length && !done) action = <Link href="/practice?mode=review" className="text-xs font-semibold text-brand-700 hover:underline">Revisar agora →</Link>;
       break;
     case "topic": {
       title = topicName(step.topic);
@@ -44,7 +44,7 @@ function StepCard({ step, index, current }: { step: Step; index: number; current
       const notebook = profile.notebooklm[step.subject] || profile.notebooklm.geral;
       action = (
         <span className="flex flex-wrap gap-x-3 gap-y-1 text-xs">
-          <Link href={`/edital/${step.topic}`} className="font-semibold text-brand-700 hover:underline">Ler o guia →</Link>
+          <Link href={`/syllabus/${step.topic}`} className="font-semibold text-brand-700 hover:underline">Ler o guia →</Link>
           <a href={notebook || "https://notebooklm.google.com"} target="_blank" rel="noreferrer" className="text-ink-2 hover:underline">Áudio no NotebookLM</a>
         </span>
       );
@@ -57,7 +57,7 @@ function StepCard({ step, index, current }: { step: Step; index: number; current
       action = done ? (
         <span className="text-xs font-semibold text-success">{step.correct} de {step.ids.length} certas</span>
       ) : step.ids.length ? (
-        <Link href="/praticar?modo=missao" className="text-xs font-semibold text-brand-700 hover:underline">{step.done ? "Continuar bloco →" : "Começar bloco →"}</Link>
+        <Link href="/practice?mode=mission" className="text-xs font-semibold text-brand-700 hover:underline">{step.done ? "Continuar bloco →" : "Começar bloco →"}</Link>
       ) : (
         <span className="text-xs text-ink-3">Sem erros na semana — aproveite para descansar.</span>
       );
@@ -66,7 +66,7 @@ function StepCard({ step, index, current }: { step: Step; index: number; current
       title = `Pegadinha do dia: ${trapById[step.trap]?.name.toLowerCase()}`;
       meta = trapById[step.trap]?.description ?? "";
       progress = step.done / step.ids.length;
-      if (!done) action = <Link href="/praticar?modo=pegadinha" className="text-xs font-semibold text-brand-700 hover:underline">Ver 3 exemplos reais →</Link>;
+      if (!done) action = <Link href="/practice?mode=trap" className="text-xs font-semibold text-brand-700 hover:underline">Ver 3 exemplos reais →</Link>;
       break;
     case "essay":
       title = "Redação cronometrada";
@@ -75,7 +75,7 @@ function StepCard({ step, index, current }: { step: Step; index: number; current
     case "mock_exam":
       title = "Simulado completo";
       meta = "70 questões no formato 2027, com tempo de prova.";
-      action = <Link href="/simulados" className="text-xs font-semibold text-brand-700 hover:underline">Escolher simulado →</Link>;
+      action = <Link href="/mock-exams" className="text-xs font-semibold text-brand-700 hover:underline">Escolher simulado →</Link>;
       break;
   }
 
@@ -151,9 +151,9 @@ export default function Today() {
   return (
     <div className="flex flex-wrap items-start gap-6">
       <div className="flex min-w-0 flex-[999_1_520px] flex-col gap-7">
-        <section aria-labelledby="missao" className="flex flex-col gap-3.5">
+        <section aria-labelledby="mission" className="flex flex-col gap-3.5">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h1 id="missao" className="text-lg font-semibold">Missão de hoje</h1>
+            <h1 id="mission" className="text-lg font-semibold">Missão de hoje</h1>
             <span className="text-xs text-ink-3">
               {mission.completed} de {mission.steps.length} etapas · ~{mission.minutes >= 60 ? `${Math.floor(mission.minutes / 60)}h${String(mission.minutes % 60).padStart(2, "0")}` : `${mission.minutes} min`}
             </span>
@@ -168,10 +168,10 @@ export default function Today() {
           </div>
         </section>
 
-        <section aria-labelledby="blocos" className="flex flex-col gap-3.5">
+        <section aria-labelledby="blocks" className="flex flex-col gap-3.5">
           <div className="flex items-baseline justify-between">
-            <Heading id="blocos">Termômetro dos blocos</Heading>
-            <Link href="/diagnostico" className="text-xs font-semibold text-brand-700 hover:underline">Diagnóstico completo</Link>
+            <Heading id="blocks">Termômetro dos blocos</Heading>
+            <Link href="/diagnosis" className="text-xs font-semibold text-brand-700 hover:underline">Diagnóstico completo</Link>
           </div>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-3.5">
             {BLOCKS.map((b) => {
@@ -193,11 +193,11 @@ export default function Today() {
           </div>
         </section>
 
-        <section aria-labelledby="semana" className="flex flex-col gap-3.5">
-          <Heading id="semana">Matérias da semana</Heading>
+        <section aria-labelledby="week" className="flex flex-col gap-3.5">
+          <Heading id="week">Matérias da semana</Heading>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-3.5">
             {week.map((w) => (
-              <Link key={w.d} href={`/edital?materia=${SCHEDULE[w.d].subjects[0]}`} className={cx("flex flex-col gap-1.5 rounded-card border px-4 py-3.5 transition-colors hover:bg-sidebar", w.isToday ? "border-brand-200" : "border-line")}>
+              <Link key={w.d} href={`/syllabus?subject=${SCHEDULE[w.d].subjects[0]}`} className={cx("flex flex-col gap-1.5 rounded-card border px-4 py-3.5 transition-colors hover:bg-sidebar", w.isToday ? "border-brand-200" : "border-line")}>
                 <span className="text-sm font-semibold">{SCHEDULE[w.d].label}</span>
                 <span className="flex items-center justify-between gap-2">
                   <span className="text-xs text-ink-3">
@@ -227,8 +227,8 @@ export default function Today() {
           </div>
         </div>
 
-        <section aria-labelledby="ativ" className="flex flex-col gap-2">
-          <Heading id="ativ">Atividade recente</Heading>
+        <section aria-labelledby="activity" className="flex flex-col gap-2">
+          <Heading id="activity">Atividade recente</Heading>
           {activity.length === 0 ? (
             <p className="text-[13px] text-ink-3">Ainda não há respostas. Comece pela missão de hoje.</p>
           ) : (
@@ -249,8 +249,8 @@ export default function Today() {
           )}
         </section>
 
-        <section aria-labelledby="datas" className="flex flex-col gap-3">
-          <Heading id="datas">Próximas datas</Heading>
+        <section aria-labelledby="dates" className="flex flex-col gap-3">
+          <Heading id="dates">Próximas datas</Heading>
           {dates.map((d) => {
             const left = daysBetween(day, d.date);
             return (
@@ -265,7 +265,7 @@ export default function Today() {
             );
           })}
         </section>
-        <ButtonLink href="/questoes" variant="secondary" className="w-full">
+        <ButtonLink href="/questions" variant="secondary" className="w-full">
           Treinar questões livres
         </ButtonLink>
       </aside>

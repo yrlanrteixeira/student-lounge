@@ -45,14 +45,14 @@ function QuestionList() {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const subject = params.get("materia") ?? "";
-  const topic = params.get("topico") ?? "";
+  const subject = params.get("subject") ?? "";
+  const topic = params.get("topic") ?? "";
   const status = params.get("status") ?? "";
-  const year = params.get("ano") ?? "";
-  const image = params.get("imagem") ?? "";
-  const report = params.get("reporte") ?? "";
+  const year = params.get("year") ?? "";
+  const image = params.get("image") ?? "";
+  const report = params.get("report") ?? "";
   const q = params.get("q") ?? "";
-  const page = Math.max(1, Number(params.get("pagina") ?? 1) || 1);
+  const page = Math.max(1, Number(params.get("page") ?? 1) || 1);
 
   const [search, setSearch] = useState(q);
   const [rows, setRows] = useState<Row[] | null>(null);
@@ -88,8 +88,8 @@ function QuestionList() {
       if (topic) query = query.eq("topic", topic);
       if (status) query = query.eq("status", status);
       if (year) query = query.eq("year", year);
-      if (image === "sem") query = query.eq("needs_image", true).is("image", null);
-      if (report === "aberto") {
+      if (image === "missing") query = query.eq("needs_image", true).is("image", null);
+      if (report === "open") {
         const { data, error } = await sb.from("reports").select("question_id").eq("status", "open");
         if (error) throw error;
         query = query.in("id", [...new Set((data ?? []).map((r) => r.question_id as string))]);
@@ -119,7 +119,7 @@ function QuestionList() {
           <h1 className="text-[22px] font-bold">Questões</h1>
           <p className="text-sm text-ink-2">{rows ? `${total} questões com esses filtros` : "Buscando…"}</p>
         </div>
-        <ButtonLink href="/admin/questoes/nova">Nova questão</ButtonLink>
+        <ButtonLink href="/admin/questions/new">Nova questão</ButtonLink>
       </header>
 
       <Card className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4 p-5">
@@ -129,14 +129,14 @@ function QuestionList() {
         </label>
         <label className="flex flex-col gap-1.5 text-[13px] font-semibold">
           Matéria
-          <select className={select} value={subject} onChange={(e) => setParam({ materia: e.target.value, topico: "" })}>
+          <select className={select} value={subject} onChange={(e) => setParam({ subject: e.target.value, topic: "" })}>
             <option value="">Todas</option>
             {SUBJECTS.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
           </select>
         </label>
         <label className="flex flex-col gap-1.5 text-[13px] font-semibold">
           Tópico
-          <select className={select} value={topic} disabled={!subject} onChange={(e) => setParam({ topico: e.target.value })}>
+          <select className={select} value={topic} disabled={!subject} onChange={(e) => setParam({ topic: e.target.value })}>
             <option value="">Todos</option>
             {TOPICS.filter((t) => t.subject === subject).map((t) => <option key={t.id} value={t.id}>{t.short_name || t.name}</option>)}
           </select>
@@ -150,18 +150,18 @@ function QuestionList() {
         </label>
         <label className="flex flex-col gap-1.5 text-[13px] font-semibold">
           Prova
-          <select className={select} value={year} onChange={(e) => setParam({ ano: e.target.value })}>
+          <select className={select} value={year} onChange={(e) => setParam({ year: e.target.value })}>
             <option value="">Todas</option>
             {examYears().map((y) => <option key={y} value={y}>{yearLabel(y)}</option>)}
           </select>
         </label>
         <div className="flex flex-col justify-end gap-2 text-[13px] font-semibold">
           <label className="flex items-center gap-2">
-            <input type="checkbox" checked={image === "sem"} onChange={(e) => setParam({ imagem: e.target.checked ? "sem" : "" })} />
+            <input type="checkbox" checked={image === "missing"} onChange={(e) => setParam({ image: e.target.checked ? "missing" : "" })} />
             Sem a imagem necessária
           </label>
           <label className="flex items-center gap-2">
-            <input type="checkbox" checked={report === "aberto"} onChange={(e) => setParam({ reporte: e.target.checked ? "aberto" : "" })} />
+            <input type="checkbox" checked={report === "open"} onChange={(e) => setParam({ report: e.target.checked ? "open" : "" })} />
             Com reporte aberto
           </label>
         </div>
@@ -177,7 +177,7 @@ function QuestionList() {
         <ul className="flex flex-col divide-y divide-line rounded-card border border-line">
           {rows.map((r) => (
             <li key={r.id}>
-              <Link href={`/admin/questoes/${encodeURIComponent(r.id)}`} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-4 py-3 transition-colors hover:bg-sidebar">
+              <Link href={`/admin/questions/${encodeURIComponent(r.id)}`} className="flex flex-wrap items-center gap-x-4 gap-y-1.5 px-4 py-3 transition-colors hover:bg-sidebar">
                 <span className="flex min-w-0 flex-[1_1_260px] flex-col gap-0.5">
                   <span className="text-sm font-semibold">
                     {r.id} <span className="font-normal text-ink-3">· TJSP {yearLabel(r.year)} · Q{r.number}</span>
@@ -198,9 +198,9 @@ function QuestionList() {
 
       {pages > 1 && (
         <nav aria-label="Páginas" className="flex items-center justify-between gap-3">
-          <Button variant="secondary" disabled={page <= 1} onClick={() => setParam({ pagina: String(page - 1) })}>Anterior</Button>
+          <Button variant="secondary" disabled={page <= 1} onClick={() => setParam({ page: String(page - 1) })}>Anterior</Button>
           <span className="text-[13px] text-ink-2">Página {page} de {pages}</span>
-          <Button variant="secondary" disabled={page >= pages} onClick={() => setParam({ pagina: String(page + 1) })}>Próxima</Button>
+          <Button variant="secondary" disabled={page >= pages} onClick={() => setParam({ page: String(page + 1) })}>Próxima</Button>
         </nav>
       )}
     </div>

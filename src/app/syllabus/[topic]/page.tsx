@@ -11,7 +11,7 @@ import { TopicActions } from "./TopicActions";
 const PRIORITY_LABEL = { high: "Prioridade alta", medium: "Prioridade média", low: "Prioridade baixa" };
 
 export default function TopicPage() {
-  const { topico: topicId } = useParams<{ topico: string }>();
+  const { topic: topicId } = useParams<{ topic: string }>();
   const topic = topicById[topicId];
   const questions = useMemo(() => INDEX.filter((q) => q.topic === topicId && q.status !== "annulled"), [topicId]);
   const [examples, setExamples] = useState<Question[]>([]);
@@ -32,7 +32,7 @@ export default function TopicPage() {
     return (
       <div className="mx-auto flex max-w-4xl flex-col gap-3">
         <h1 className="text-[22px] font-bold">Tópico não encontrado</h1>
-        <Link href="/edital" className="text-[13px] font-semibold text-brand-700 hover:underline">Voltar para o edital</Link>
+        <Link href="/syllabus" className="text-[13px] font-semibold text-brand-700 hover:underline">Voltar para o edital</Link>
       </div>
     );
 
@@ -44,8 +44,8 @@ export default function TopicPage() {
   return (
     <div className="mx-auto flex max-w-4xl flex-col gap-6">
       <nav aria-label="Caminho" className="text-[13px] text-ink-3">
-        <Link href="/edital" className="hover:underline">Edital</Link> ›{" "}
-        <Link href={`/edital?materia=${topic.subject}`} className="hover:underline">{subjectName(topic.subject)}</Link>
+        <Link href="/syllabus" className="hover:underline">Edital</Link> ›{" "}
+        <Link href={`/syllabus?subject=${topic.subject}`} className="hover:underline">{subjectName(topic.subject)}</Link>
       </nav>
 
       <header className="flex flex-wrap items-start justify-between gap-3">
